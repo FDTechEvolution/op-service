@@ -49,6 +49,40 @@ class OrgsController extends AppController
             $name = isset($dataPost['name'])?$dataPost['name']:null;
             $code = isset($dataPost['code'])?$dataPost['code']:null;
             $resultOfCheckDup = $this->checkDuplicate($name,$code);
+            
+            if($resultOfCheckDup['result']){
+                if($this->Orgs->save($org)){
+                    $result = ['result'=>true,'msg'=>'success'];
+                }else{
+                    $result = ['result'=>false,'msg'=>$org->getErrors()];
+                }
+            }else{
+                $result = $resultOfCheckDup;
+            }
+            
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function update($orgId = null){
+
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+
+        if($this->request->is(['post'])){
+
+            $org = $this->Orgs->find()->where(['id'=>$orgId])->first();
+            $dataPost = $this->request->getData();
+            $org = $this->Orgs->patchEntity($org, $dataPost);
+        
+            //Check duplicate org
+            $name = isset($dataPost['name'])?$dataPost['name']:null;
+            $code = isset($dataPost['code'])?$dataPost['code']:null;
+            $resultOfCheckDup = $this->checkDuplicate($name,$code,$orgId);
+
             if($resultOfCheckDup['result']){
                 if($this->Orgs->save($org)){
                     $result = ['result'=>true,'msg'=>'success'];
