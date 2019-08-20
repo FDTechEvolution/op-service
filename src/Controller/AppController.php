@@ -30,7 +30,8 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-
+        //$this->eventManager()->off($this->Csrf);
+        //$this->getEventManager()->off($this->Csrf);
         //$this->autoRender = false;
     
     }
@@ -51,12 +52,13 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
-        $this->loadComponent('Flash');
+        //$this->loadComponent('Flash');
 
         /*
          * Enable the following component for recommended CakePHP security settings.
          * see https://book.cakephp.org/3.0/en/controllers/components/security.html
          */
         //$this->loadComponent('Security');
+        //$this->loadComponent('Csrf');
     }
 }
