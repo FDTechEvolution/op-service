@@ -52,6 +52,21 @@ class AppController extends Controller
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
+
+        // $this->loadComponent('Auth', [
+        //     'loginAction' => [
+        //         'controller' => 'Login',
+        //         'action' => 'index'
+        //     ],
+        //     'authError' => 'Did you really think you are allowed to see that?',
+        //     'authenticate' => [
+        //         'Form' => [
+        //             'fields' => ['username' => 'mobile', 'password' => 'password']
+        //         ]
+        //     ],
+        //     'storage' => 'Session'
+        // ]);
+
         //$this->loadComponent('Flash');
 
         /*
