@@ -23,7 +23,7 @@ class UsersController extends AppController
         if(is_null($userId)){
             $users = $this->Users->find()->where(['isactive !=' => 'D'])->toArray();
         }else{
-            $users = $this->Users->find()->where(['id'=>$orgId])->first();
+            $users = $this->Users->find()->where(['id'=>$userId])->first();
         }
         
         $json = json_encode($users,JSON_PRETTY_PRINT);
@@ -35,7 +35,6 @@ class UsersController extends AppController
     public function create(){
 
         $result = ['result'=>false,'msg'=>'please use POST method.'];
-
 
         if($this->request->is(['post'])){
 
@@ -105,10 +104,8 @@ class UsersController extends AppController
         $result = ['result'=>false,'msg'=>'please use POST method.'];
 
         if($this->request->is(['post'])){
-
             $user = $this->Users->find()->where(['id'=>$userId])->first();
-            $dataPost = $this->request->getData();
-            $user->isactive = $dataPost['isactive'];
+            $user->isactive = 'D';
         
             if($this->Users->save($user)){
                 $result = ['result'=>true,'msg'=>'success'];
