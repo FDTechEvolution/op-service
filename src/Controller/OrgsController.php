@@ -20,14 +20,17 @@ class OrgsController extends AppController
     }
 
 
-    public function index($orgId = null){
-        if(is_null($orgId)){
-            $orgs = $this->Orgs->find()->toArray();
-        }else{
-            $orgs = $this->Orgs->find()->where(['id'=>$orgId])->first();
-        }
+    public function index(){
+        $orgs = $this->Orgs->find()->where(['isactive !='=>'D'])->toArray();
         
+        $json = json_encode($orgs,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
 
+    public function get($orgId = null){
+        $orgs = $this->Orgs->find()->where(['id'=>$orgId, 'isactive !='=>'D'])->first();
+        
         $json = json_encode($orgs,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');

@@ -18,13 +18,18 @@ class WarehousesController extends AppController
     
     }
 
-    public function index($warehouseId = null)
+    public function index()
     {
-        if(is_null($warehouseId)){
-            $warehouses = $this->Warehouses->find()->where(['isactive !=' => 'D'])->toArray();
-        }else{
-            $warehouses = $this->Warehouses->find()->where(['id'=>$warehouseId])->first();
-        }
+        $warehouses = $this->Warehouses->find()->where(['isactive !=' => 'D'])->toArray();
+        
+        $json = json_encode($warehouses,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function get($warehouseId = null)
+    {
+        $warehouses = $this->Warehouses->find()->where(['id'=>$warehouseId, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($warehouses,JSON_PRETTY_PRINT);
         $this->set(compact('json'));

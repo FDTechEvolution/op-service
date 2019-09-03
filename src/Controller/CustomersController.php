@@ -20,13 +20,18 @@ class CustomersController extends AppController
     
     }
 
-    public function index($customerId = null)
+    public function index()
     {
-        if(is_null($customerId)){
-            $customer = $this->Customers->find()->where(['isactive !=' => 'D'])->toArray();
-        }else{
-            $customer = $this->Customers->find()->where(['id'=>$customerId])->first();
-        }
+        $customer = $this->Customers->find()->where(['isactive !=' => 'D'])->toArray();
+        
+        $json = json_encode($customer,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function get($customerId = null)
+    {
+        $customer = $this->Customers->find()->where(['id'=>$customerId, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($customer,JSON_PRETTY_PRINT);
         $this->set(compact('json'));

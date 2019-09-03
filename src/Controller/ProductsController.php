@@ -18,13 +18,18 @@ class ProductsController extends AppController
     
     }
 
-    public function index($productId = null)
+    public function index()
     {
-        if(is_null($productId)){
-            $products = $this->Products->find()->where(['isactive !=' => 'D'])->toArray();
-        }else{
-            $products = $this->Products->find()->where(['id'=>$productId])->first();
-        }
+        $products = $this->Products->find()->where(['isactive !=' => 'D'])->toArray();
+        
+        $json = json_encode($products,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function get($productId = null)
+    {
+        $products = $this->Products->find()->where(['id'=>$productId, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($products,JSON_PRETTY_PRINT);
         $this->set(compact('json'));

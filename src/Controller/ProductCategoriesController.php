@@ -21,11 +21,16 @@ class ProductCategoriesController extends AppController
 
     public function index($procateId = null)
     {
-        if(is_null($procateId)){
-            $productCategory = $this->ProductCategories->find()->where(['isactive !=' => 'D'])->toArray();
-        }else{
-            $productCategory = $this->ProductCategories->find()->where(['id'=>$procateId])->first();
-        }
+        $productCategory = $this->ProductCategories->find()->where(['isactive !=' => 'D'])->toArray();
+
+        $json = json_encode($productCategory,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function get($procateId = null)
+    {
+        $productCategory = $this->ProductCategories->find()->where(['id'=>$procateId, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($productCategory,JSON_PRETTY_PRINT);
         $this->set(compact('json'));

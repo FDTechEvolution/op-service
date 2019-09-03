@@ -20,13 +20,18 @@ class BpartnersController extends AppController
     
     }
 
-    public function index($bpartnerId = null)
+    public function index()
     {
-        if(is_null($bpartnerId)){
-            $bpartner = $this->Bpartners->find()->where(['isactive !=' => 'D'])->toArray();
-        }else{
-            $bpartner = $this->Bpartners->find()->where(['id'=>$bpartnerId])->first();
-        }
+        $bpartner = $this->Bpartners->find()->where(['isactive !=' => 'D'])->toArray();
+        
+        $json = json_encode($bpartner,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function get($bpartnerId = null)
+    {
+        $bpartner = $this->Bpartners->find()->where(['id'=>$bpartnerId, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($bpartner,JSON_PRETTY_PRINT);
         $this->set(compact('json'));

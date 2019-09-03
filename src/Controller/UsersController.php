@@ -18,13 +18,18 @@ class UsersController extends AppController
     
     }
 
-    public function index($userId = null)
+    public function index()
     {
-        if(is_null($userId)){
-            $users = $this->Users->find()->where(['isactive !=' => 'D'])->toArray();
-        }else{
-            $users = $this->Users->find()->where(['id'=>$userId])->first();
-        }
+        $users = $this->Users->find()->where(['isactive !=' => 'D'])->toArray();
+        
+        $json = json_encode($users,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function get($userId = null)
+    {
+        $users = $this->Users->find()->where(['id'=>$userId, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($users,JSON_PRETTY_PRINT);
         $this->set(compact('json'));

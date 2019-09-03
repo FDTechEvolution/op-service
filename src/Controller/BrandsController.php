@@ -20,13 +20,18 @@ class BrandsController extends AppController
     }
 
 
-    public function index($brandId = null)
+    public function index()
     {
-        if(is_null($brandId)){
-            $brands = $this->Brands->find()->where(['isactive !=' => 'D'])->toArray();
-        }else{
-            $brands = $this->Brands->find()->where(['id'=>$brandId])->first();
-        }
+        $brands = $this->Brands->find()->where(['isactive !=' => 'D'])->toArray();
+        
+        $json = json_encode($brands,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function get($brandId = null)
+    {
+        $brands = $this->Brands->find()->where(['id'=>$brandId, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($brands,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
