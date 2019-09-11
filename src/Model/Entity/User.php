@@ -18,6 +18,7 @@ use Cake\ORM\Entity;
  * @property string|null $createdby
  * @property string|null $modifiedby
  * @property string|null $description
+ * @property string $status
  *
  * @property \App\Model\Entity\Org $org
  * @property \App\Model\Entity\ShipmentInout[] $shipment_inouts
@@ -45,6 +46,7 @@ class User extends Entity
         'createdby' => true,
         'modifiedby' => true,
         'description' => true,
+        'status' => true,
         'org' => true,
         'shipment_inouts' => true
     ];

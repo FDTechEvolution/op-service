@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * Users Model
  *
  * @property \App\Model\Table\OrgsTable&\Cake\ORM\Association\BelongsTo $Orgs
+ * @property &\Cake\ORM\Association\HasMany $Orders
  * @property \App\Model\Table\ShipmentInoutsTable&\Cake\ORM\Association\HasMany $ShipmentInouts
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
@@ -44,6 +45,9 @@ class UsersTable extends Table
         $this->belongsTo('Orgs', [
             'foreignKey' => 'org_id',
             'joinType' => 'INNER'
+        ]);
+        $this->hasMany('Orders', [
+            'foreignKey' => 'user_id'
         ]);
         $this->hasMany('ShipmentInouts', [
             'foreignKey' => 'user_id'
@@ -100,6 +104,11 @@ class UsersTable extends Table
             ->scalar('description')
             ->maxLength('description', 255)
             ->allowEmptyString('description');
+
+        $validator
+            ->scalar('status')
+            ->maxLength('status', 3)
+            ->notEmptyString('status');
 
         return $validator;
     }

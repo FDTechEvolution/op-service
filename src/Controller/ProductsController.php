@@ -20,7 +20,7 @@ class ProductsController extends AppController
 
     public function index()
     {
-        $products = $this->Products->find()->where(['isactive !=' => 'D'])->toArray();
+        $products = $this->Products->find()->where(['status !=' => 'DEL'])->toArray();
         
         $json = json_encode($products,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
@@ -29,11 +29,58 @@ class ProductsController extends AppController
 
     public function get($productId = null)
     {
-        $products = $this->Products->find()->where(['id'=>$productId, 'isactive !=' => 'D'])->first();
+        $products = $this->Products->find()->where(['id'=>$productId, 'status !=' => 'DEL'])->first();
         
         $json = json_encode($products,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
+    }
+
+    public function list(){
+        $getOrg = $this->request->getQuery('org');
+        $getActive = $this->request->getQuery('active');
+        $getLimit = $this->request->getQuery('limit');
+        $getCategory = $this->request->getQuery('category');
+
+        if(is_null($getActive) && is_null($getLimit) && is_null($getCategory)){
+            $products = $this->Products->find()->where(['status !=' => 'DEL'])->toArray();
+        }else{
+            $isactive = isset($getActive)?($getActive == 'yes'?(['isactive' => 'Y']):($getActive == 'no'?(['isactive' => 'N']):false)) : true;
+            $limit = isset($getLimit)?$limit = $getLimit:$limit = 100;
+            $category = isset($getCategory)?(['product_category_id' => $getCategory]):'';
+            $org = isset($getOrg)?(['org_id' => $getOrg]):'';
+            $resultListCondution = $this->listCondition($getLimit, $isactive);
+
+            if($resultListCondution['result']){
+                $products = $this->Products->find()
+                        ->where([$isactive, $category, $org, 'status !=' => 'DEL'])
+                        ->limit($limit)
+                        ->toArray();
+            }else{
+                $products = $resultListCondution;
+            }
+        }
+
+        $json = json_encode($products,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    private function listCondition($getLimit, $isactive){
+        $msg = '';
+        $result = true;
+
+        if(isset($getLimit) && !is_numeric($getLimit)){
+            $msg = "Limit is be interger.";
+            $result = false;
+        }
+        if(!$isactive){
+            $msg = "Active status is not correct.";
+            $result = false;
+        }
+
+        return ['result'=>$result,'msg'=>$msg];
+
     }
 
 
@@ -113,7 +160,7 @@ class ProductsController extends AppController
 
         if($this->request->is(['post'])){
             $product = $this->Products->find()->where(['id'=>$productId])->first();
-            $product->isactive = 'D';
+            $product->status = 'DEL';
         
             if($this->Products->save($product)){
                 $result = ['result'=>true,'msg'=>'success'];
@@ -145,7 +192,7 @@ class ProductsController extends AppController
                                 'product_category_id' => $procateId,
                                 'org_id' => $orgId,
                                 'name' => $name,
-                                'isactive !=' =>'D'
+                                'status !=' =>'DEL'
                                 ])
                             ->first();
             if(!is_null($product)){
@@ -157,7 +204,7 @@ class ProductsController extends AppController
                                 'product_category_id' => $procateId,
                                 'org_id' => $orgId,
                                 'code' => $code,
-                                'isactive !=' =>'D'
+                                'status !=' =>'DEL'
                                 ])
                             ->first();
             if(!is_null($product)){
@@ -171,7 +218,7 @@ class ProductsController extends AppController
                                 'product_category_id' => $procateId,
                                 'org_id' => $orgId,
                                 'name' => $name,
-                                'isactive !=' => 'D',
+                                'status !=' => 'DEL',
                                 'id !=' => $productId
                                 ])
                             ->first();
@@ -184,7 +231,7 @@ class ProductsController extends AppController
                                 'product_category_id' => $procateId,
                                 'org_id' => $orgId,
                                 'code' => $code,
-                                'isactive !=' =>'D',
+                                'status !=' =>'DEL',
                                 'id !=' => $productId
                                 ])
                             ->first();

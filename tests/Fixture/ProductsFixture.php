@@ -28,6 +28,8 @@ class ProductsFixture extends TestFixture
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'createdby' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modifiedby' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
+        'isactive' => ['type' => 'string', 'length' => null, 'null' => false, 'default' => 'Y', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'status' => ['type' => 'string', 'length' => 3, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -46,19 +48,21 @@ class ProductsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => '9e3631da-adf7-45aa-83b5-256705c1a33c',
-                'org_id' => '0503725c-d5fd-4d2a-897d-c390cf60f53e',
-                'product_category_id' => '7c56ebe9-ea1b-4149-8cca-10ebe96faaa2',
+                'id' => '4abac5b3-d714-4e4b-b573-ddf235068f9f',
+                'org_id' => '1881df8c-b981-4484-8cfb-4c72fdd1a869',
+                'product_category_id' => '3453bcc4-d1d2-40ca-9b9f-3a6f2f1ead51',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'code' => 'Lorem ipsum dolor sit amet',
                 'cost' => 1.5,
                 'price' => 1.5,
-                'brand_id' => '0cf8d408-46f9-4df9-acf3-bdf7c4f621f2',
+                'brand_id' => 'cfa02291-2200-45f8-bbb4-a854f59dafb4',
                 'description' => 'Lorem ipsum dolor sit amet',
-                'created' => '2019-08-23 08:23:04',
-                'modified' => '2019-08-23 08:23:04',
-                'createdby' => '65192a3a-fb72-4f4a-9f2a-ae5b1f2a44f9',
-                'modifiedby' => '9d9c36c9-c9c3-484d-ac12-a1af6b71aa95'
+                'created' => '2019-09-10 05:12:45',
+                'modified' => '2019-09-10 05:12:45',
+                'createdby' => '6b093d31-3deb-41da-a614-92afdf5131a7',
+                'modifiedby' => '9a41663b-ac45-447b-a1fb-0f61878e6f08',
+                'isactive' => 'Lorem ipsum dolor sit amet',
+                'status' => 'L'
             ],
         ];
         parent::init();

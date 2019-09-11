@@ -19,6 +19,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property string|null $createdby
  * @property string|null $modifiedby
+ * @property string $isactive
+ * @property string|null $status
  *
  * @property \App\Model\Entity\Org $org
  * @property \App\Model\Entity\ProductCategory $product_category
@@ -50,6 +52,8 @@ class Product extends Entity
         'modified' => true,
         'createdby' => true,
         'modifiedby' => true,
+        'isactive' => true,
+        'status' => true,
         'org' => true,
         'product_category' => true,
         'brand' => true,

@@ -38,6 +38,50 @@ class BrandsController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function list(){
+        $getOrg = $this->request->getQuery('org');
+        $getActive = $this->request->getQuery('active');
+        $getLimit = $this->request->getQuery('limit');
+
+        if(is_null($getActive) && is_null($getLimit) && is_null($getOrg)){
+            $brands = $this->Brands->find()->where(['status !=' => 'DEL'])->toArray();
+        }else{
+            $isactive = isset($getActive)?($getActive == 'yes'?(['isactive' => 'Y']):($getActive == 'no'?(['isactive' => 'N']):false)) : true;
+            $limit = isset($getLimit)?$limit = $getLimit:$limit = 100;
+            $org = isset($getOrg)?(['org_id' => $getOrg]):'';
+            $resultListCondution = $this->listCondition($getLimit, $isactive);
+
+            if($resultListCondution['result']){
+                $brands = $this->Brands->find()
+                        ->where([$isactive, $org, 'status !=' => 'DEL'])
+                        ->limit($limit)
+                        ->toArray();
+            }else{
+                $brands = $resultListCondution;
+            }
+        }
+
+        $json = json_encode($brands,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    private function listCondition($getLimit, $isactive){
+        $msg = '';
+        $result = true;
+
+        if(isset($getLimit) && !is_numeric($getLimit)){
+            $msg = "Limit is be interger.";
+            $result = false;
+        }
+        if(!$isactive){
+            $msg = "Active status is not correct.";
+            $result = false;
+        }
+
+        return ['result'=>$result,'msg'=>$msg];
+    }
+
     public function create(){
 
         $result = ['result'=>false,'msg'=>'please use POST method.'];

@@ -27,6 +27,7 @@ class UsersFixture extends TestFixture
         'createdby' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modifiedby' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'description' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'status' => ['type' => 'string', 'length' => 3, 'null' => false, 'default' => 'ON', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -45,18 +46,19 @@ class UsersFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => 'bcbdc2c6-4d9c-4201-92bc-c11ea8829b8b',
-                'org_id' => 'f2b33b9f-cd12-4b3c-a41c-f7400a901da5',
+                'id' => '0ae53adb-17bc-46f4-bd18-99d54dde04ba',
+                'org_id' => 'a612a29a-11af-4004-9cba-f5d22b519dec',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'email' => 'Lorem ipsum dolor sit amet',
                 'mobile' => 'Lorem ip',
                 'password' => 'Lorem ipsum dolor sit amet',
                 'isactive' => 'Lorem ipsum dolor sit amet',
-                'created' => '2019-08-20 11:58:14',
-                'modified' => '2019-08-20 11:58:14',
-                'createdby' => '2a775a6b-794d-4b53-a6fa-6a8cf11eb3d3',
-                'modifiedby' => '50f1e658-0bfb-4095-97a3-98c1c8a13ec3',
-                'description' => 'Lorem ipsum dolor sit amet'
+                'created' => '2019-09-11 10:17:30',
+                'modified' => '2019-09-11 10:17:30',
+                'createdby' => '457a999d-5b36-4bae-a10e-9dbb4ccf070b',
+                'modifiedby' => 'e5569a18-ab61-4f0c-9bfa-7eecf3750529',
+                'description' => 'Lorem ipsum dolor sit amet',
+                'status' => 'L'
             ],
         ];
         parent::init();

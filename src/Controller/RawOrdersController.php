@@ -32,6 +32,44 @@ class RawOrdersController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function list(){
+        $getOrg = $this->request->getQuery('org');
+        $getLimit = $this->request->getQuery('limit');
+
+        if(is_null($getLimit) && is_null($getOrg)){
+            $rawOrder = $this->RawOrders->find()->where(['status !=' => 'DEL'])->toArray();
+        }else{
+            $limit = isset($getLimit)?$limit = $getLimit:$limit = 100;
+            $org = isset($getOrg)?(['org_id' => $getOrg]):'';
+            $resultListCondution = $this->listCondition($getLimit);
+
+            if($resultListCondution['result']){
+                $rawOrder = $this->RawOrders->find()
+                        ->where([$org, 'status !=' => 'DEL'])
+                        ->limit($limit)
+                        ->toArray();
+            }else{
+                $rawOrder = $resultListCondution;
+            }
+        }
+
+        $json = json_encode($rawOrder,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    private function listCondition($getLimit){
+        $msg = '';
+        $result = true;
+
+        if(isset($getLimit) && !is_numeric($getLimit)){
+            $msg = "Limit is be interger.";
+            $result = false;
+        }
+
+        return ['result'=>$result,'msg'=>$msg];
+    }
+
     
     public function create(){
 

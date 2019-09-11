@@ -24,6 +24,7 @@ class BrandsFixture extends TestFixture
         'createdby' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modifiedby' => ['type' => 'uuid', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'isactive' => ['type' => 'string', 'length' => null, 'null' => false, 'default' => 'Y', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'status' => ['type' => 'string', 'length' => 3, 'null' => false, 'default' => 'ON', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -42,15 +43,16 @@ class BrandsFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => '9199c678-0e75-4135-862e-323ec05148c8',
+                'id' => '68ac8247-20ee-404b-9183-4153aa6dcaf0',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'description' => 'Lorem ipsum dolor sit amet',
-                'org_id' => 'dd1fd725-8279-4f4b-86b9-f9c012fbcda5',
-                'created' => '2019-08-22 05:37:29',
-                'modified' => '2019-08-22 05:37:29',
-                'createdby' => '0ef93527-50c7-437c-b59b-f1aae4cfdc6b',
-                'modifiedby' => '8546f06c-5ce3-4844-b36f-c9412ea5f49c',
-                'isactive' => 'Lorem ipsum dolor sit amet'
+                'org_id' => '44682e12-fea3-44c4-b687-285954b30804',
+                'created' => '2019-09-10 10:10:17',
+                'modified' => '2019-09-10 10:10:17',
+                'createdby' => 'db83a571-116a-4a28-a230-b9a5bb0b19c6',
+                'modifiedby' => '2ff9feda-072e-4717-a04c-6ca2f121b583',
+                'isactive' => 'Lorem ipsum dolor sit amet',
+                'status' => 'L'
             ],
         ];
         parent::init();

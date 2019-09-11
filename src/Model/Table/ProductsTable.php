@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\OrgsTable&\Cake\ORM\Association\BelongsTo $Orgs
  * @property \App\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\BelongsTo $ProductCategories
  * @property \App\Model\Table\BrandsTable&\Cake\ORM\Association\BelongsTo $Brands
+ * @property &\Cake\ORM\Association\HasMany $OrderLines
  * @property \App\Model\Table\ShipmentInoutLinesTable&\Cake\ORM\Association\HasMany $ShipmentInoutLines
  * @property \App\Model\Table\WarehouseLinesTable&\Cake\ORM\Association\HasMany $WarehouseLines
  *
@@ -55,6 +56,9 @@ class ProductsTable extends Table
         $this->belongsTo('Brands', [
             'foreignKey' => 'brand_id',
             'joinType' => 'INNER'
+        ]);
+        $this->hasMany('OrderLines', [
+            'foreignKey' => 'product_id'
         ]);
         $this->hasMany('ShipmentInoutLines', [
             'foreignKey' => 'product_id'
@@ -108,6 +112,15 @@ class ProductsTable extends Table
         $validator
             ->uuid('modifiedby')
             ->allowEmptyString('modifiedby');
+
+        $validator
+            ->scalar('isactive')
+            ->notEmptyString('isactive');
+
+        $validator
+            ->scalar('status')
+            ->maxLength('status', 3)
+            ->allowEmptyString('status');
 
         return $validator;
     }
