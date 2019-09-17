@@ -68,19 +68,32 @@ class OrderLinesController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function update($orderlineID = null){
-        $result = ['result'=>false,'msg'=>'please use POST method.'];
+    public function update($orderID = null){
+        if(isset($orderID)){
+            $result = ['result'=>false,'msg'=>'please use POST method.'];
+            $totalamt = 0;
 
-        if($this->request->is(['post'])){
-            $orderLine = $this->OrderLines->find()->where(['id'=>$orderlineID])->first();
-            $dataPost = $this->request->getData();
-            $orderLine = $this->OrderLines->patchEntity($orderLine, $dataPost);
+            if($this->request->is(['post'])){
+                $postData = $this->request->getData();
+                foreach($postData['products'] as $key => $product_id){
+                    $orderLine = $this->OrderLines->find()->where(['order_id' => $orderID, 'product_id' => $product_id])->first();
+                    $product = $this->Products->find()->where(['id' => $product_id])->first();
 
-            if($this->OrderLines->save($orderLine)){
-                $result = ['result'=>true,'msg'=>'success'];
-            }else{
-                $result = ['result'=>false,'msg'=>$orderLine->getErrors()];
+                    if($postData['qtys'][$key] == ''){
+                        $this->delete($orderLine->id);
+                    }else{
+                        $orderLine->product_id = $product->id;
+                        $orderLine->qty = $postData['qtys'][$key];
+                        $orderLine->price = $product->price;
+                        $totalamt += $orderLine->amount = $this->amountPrice($postData['qtys'][$key],$product->price);
+                    }
+
+                    $this->OrderLines->save($orderLine);
+                }
+                $result = $this->setStatus($orderID, $totalamt);
             }
+        }else{
+            $result = ['result'=>false, 'msg'=>'Order is null.'];
         }
 
         $json = json_encode($result,JSON_PRETTY_PRINT);
@@ -117,5 +130,10 @@ class OrderLinesController extends AppController
                     return ['result'=>true, 'msg'=>'success'];
                 }
             }
+    }
+
+    private function delete($orderlineID){
+        $orderLine = $this->OrderLines->get($orderlineID);
+        $this->OrderLines->delete($orderLine);
     }
 }
