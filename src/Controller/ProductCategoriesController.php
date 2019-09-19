@@ -28,7 +28,7 @@ class ProductCategoriesController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function get($procateId = null)
+    public function all($procateId = null)
     {
         $productCategory = $this->ProductCategories->find()->where(['id'=>$procateId, 'isactive !=' => 'D'])->first();
         

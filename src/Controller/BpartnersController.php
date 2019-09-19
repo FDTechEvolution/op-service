@@ -29,7 +29,7 @@ class BpartnersController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function get($bpartnerId = null)
+    public function all($bpartnerId = null)
     {
         $bpartner = $this->Bpartners->find()->where(['id'=>$bpartnerId, 'isactive !=' => 'D'])->first();
         

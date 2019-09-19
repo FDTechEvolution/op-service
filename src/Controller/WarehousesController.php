@@ -27,7 +27,7 @@ class WarehousesController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function get($warehouseId = null)
+    public function all($warehouseId = null)
     {
         $warehouses = $this->Warehouses->find()->where(['id'=>$warehouseId, 'isactive !=' => 'D'])->first();
         

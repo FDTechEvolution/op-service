@@ -28,7 +28,7 @@ class OrgsController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function get($orgId = null){
+    public function all($orgId = null){
         $orgs = $this->Orgs->find()->where(['id'=>$orgId, 'isactive !='=>'D'])->first();
         
         $json = json_encode($orgs,JSON_PRETTY_PRINT);

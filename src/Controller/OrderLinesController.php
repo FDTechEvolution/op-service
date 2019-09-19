@@ -22,7 +22,7 @@ class OrderLinesController extends AppController
     
     }
 
-    public function list($orderID = null){
+    public function all($orderID = null){
         if(isset($orderID)){
             $getLimit = $this->request->getQuery('limit');
             $limit = isset($getLimit)?$getLimit:100;

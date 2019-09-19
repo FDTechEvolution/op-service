@@ -28,7 +28,7 @@ class OrdersController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function list(){
+    public function all(){
         $getOrg = $this->request->getQuery('org');
         $getOrderdate = $this->request->getQuery('orderdate');
         $getLimit = $this->request->getQuery('limit');

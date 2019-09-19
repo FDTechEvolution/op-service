@@ -29,7 +29,7 @@ class CustomersController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function get($customerId = null)
+    public function all($customerId = null)
     {
         $customer = $this->Customers->find()->where(['id'=>$customerId, 'isactive !=' => 'D'])->first();
         

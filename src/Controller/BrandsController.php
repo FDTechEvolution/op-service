@@ -38,7 +38,7 @@ class BrandsController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function list(){
+    public function all(){
         $getOrg = $this->request->getQuery('org');
         $getActive = $this->request->getQuery('active');
         $getLimit = $this->request->getQuery('limit');

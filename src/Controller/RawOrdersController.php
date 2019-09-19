@@ -32,7 +32,7 @@ class RawOrdersController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function list(){
+    public function all(){
         $getOrg = $this->request->getQuery('org');
         $getLimit = $this->request->getQuery('limit');
 
