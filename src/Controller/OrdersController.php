@@ -21,7 +21,25 @@ class OrdersController extends AppController
 
     public function index()
     {
-        $orders = $this->Orders->find()->where(['status !=' => 'VO'])->toArray();
+        $orders = $this->Orders->find()->where(['status' => 'DR'])->toArray();
+        
+        $json = json_encode($orders,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function orderConfirm()
+    {
+        $orders = $this->Orders->find()->where(['status' => 'CO'])->toArray();
+        
+        $json = json_encode($orders,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function orderCancel()
+    {
+        $orders = $this->Orders->find()->where(['status' => 'VO'])->toArray();
         
         $json = json_encode($orders,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
