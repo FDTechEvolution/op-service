@@ -21,7 +21,7 @@ class OrdersController extends AppController
 
     public function index()
     {
-        $orders = $this->Orders->find()->where(['status' => 'DR'])->toArray();
+        $orders = $this->Orders->find()->where(['status' => 'DX'])->toArray();
         
         $json = json_encode($orders,JSON_PRETTY_PRINT);
         $this->set(compact('json'));

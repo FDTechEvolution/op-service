@@ -17,6 +17,8 @@ class CustomersController extends AppController
         parent::beforeFilter($event);
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
+        $this->cus_addr = TableRegistry::get('customer_addresses');
+        $this->address = TableRegistry::get('addresses');
     
     }
 
@@ -36,6 +38,18 @@ class CustomersController extends AppController
         $json = json_encode($customer,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
+    }
+
+    public function getAddress($customerId = null)
+    {
+        $cus_addr = $this->cus_addr->find()->where(['customer_id' => $customerId])->first();
+        if(isset($cus_addr)){
+            $address = $this->address->find()->where(['id' => $cus_addr['address_id']])->first();
+
+            $json = json_encode($address,JSON_PRETTY_PRINT);
+            $this->set(compact('json'));
+            $this->set('_serialize', 'json');
+        }
     }
 
     
