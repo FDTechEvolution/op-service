@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Orders Controller
@@ -12,8 +13,10 @@ use Cake\Event\Event;
  */
 class OrdersController extends AppController
 {
+
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
+        $this->Users = TableRegistry::get('Users');
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
     
@@ -24,6 +27,30 @@ class OrdersController extends AppController
         $orders = $this->Orders->find()->where(['status' => 'DX'])->toArray();
         
         $json = json_encode($orders,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function getOrder($stat)
+    {
+        $orders = $this->Orders->find()
+            ->contain(['Users','OrderLines'=>['Products']])
+            ->where(['Orders.status' => $stat])->toArray();
+        $newOrders = [];
+        if($orders){
+            foreach($orders as $order){
+                $order['user'] = $order->user->name;
+
+                $productDes = '';
+                foreach($order->order_lines as $line){
+                    $productDes .= $line->product->name;
+                }
+                $order['order_lines'] = $productDes;
+                array_push($newOrders,$order);
+            }
+        }
+        
+        $json = json_encode($newOrders,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
