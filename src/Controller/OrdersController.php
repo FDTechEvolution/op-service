@@ -16,7 +16,7 @@ class OrdersController extends AppController
 
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        $this->Users = TableRegistry::get('Users');
+        $this->CustomerAddresses = TableRegistry::get('customer_addresses');
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
     
@@ -34,7 +34,7 @@ class OrdersController extends AppController
     public function getOrder($stat)
     {
         $orders = $this->Orders->find()
-            ->contain(['Users','OrderLines'=>['Products']])
+            ->contain(['Users','OrderLines'=>['Products'],'Customers'])
             ->where(['Orders.status' => $stat])->toArray();
         $newOrders = [];
         if($orders){
@@ -43,9 +43,34 @@ class OrdersController extends AppController
 
                 $productDes = '';
                 foreach($order->order_lines as $line){
-                    $productDes .= $line->product->name;
+                    $productDes .= $line->product->name.' ';
                 }
                 $order['order_lines'] = $productDes;
+
+                $order['customer'] = $order->customer->name;
+
+                $line1 = '';
+                $subdistrict = '';
+                $district = '';
+                $province = '';
+                $zipcode = '';
+                $addresses = $this->CustomerAddresses->find()
+                    ->contain(['Addresses'])
+                    ->where(['customer_addresses.customer_id' => $order->customer_id])->toArray();
+                    foreach($addresses as $address){
+                        $line1 .= $address->address->line1;
+                        $subdistrict .= $address->address->subdistrict;
+                        $district .= $address->address->district;
+                        $province .= $address->address->province;
+                        $zipcode .= $address->address->zipcode;
+                    }
+
+                    $order['line1'] = $line1;
+                    $order['subdistrict'] = $subdistrict;
+                    $order['district'] = $district;
+                    $order['province'] = $province;
+                    $order['zipcode'] = $zipcode;
+
                 array_push($newOrders,$order);
             }
         }
