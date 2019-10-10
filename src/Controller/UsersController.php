@@ -83,7 +83,7 @@ class UsersController extends AppController
 
     public function create(){
 
-        $result = ['result'=>false,'msg'=>'please use POST method.'];
+        $result = ['result'=>false,'msg'=>'please use POST method.','data'=>[]];
 
         if($this->request->is(['post'])){
 
@@ -98,7 +98,7 @@ class UsersController extends AppController
             
             if($resultOfCheckDup['result']){
                 if($this->Users->save($user)){
-                    $result = ['result'=>true,'msg'=>'success'];
+                    $result = ['result'=>true,'msg'=>'success','data'=>['user_id'=>$user->id]];
                 }else{
                     $result = ['result'=>false,'msg'=>$user->getErrors()];
                 }
