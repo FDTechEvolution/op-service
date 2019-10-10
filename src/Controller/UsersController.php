@@ -113,6 +113,19 @@ class UsersController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function chkmobile($mobile){
+        $user = $this->Users->find()->where(['mobile'=>$mobile, 'isactive' => 'Y'])->first();
+            if(!is_null($user)){
+                $result['result'] = false;
+            }else{
+                $result['result'] = true;
+            }
+
+            $json = json_encode($result,JSON_PRETTY_PRINT);
+            $this->set(compact('json'));
+            $this->set('_serialize', 'json');
+    }
+
 
     public function update($userId = null){
 

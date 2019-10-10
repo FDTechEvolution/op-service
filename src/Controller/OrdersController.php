@@ -138,7 +138,7 @@ class OrdersController extends AppController
             if($this->Orders->save($order)){
                 $result = ['result'=>true,'msg'=>'success'];
             }else{
-                $result = ['result'=>false,'msg'=>$user->getErrors()];
+                $result = ['result'=>false,'msg'=>$order->getErrors()];
             }
         }
 
