@@ -21,7 +21,7 @@ class SmsController extends AppController {
         if ($this->request->is(['post'])) {
             $postData = $this->request->getData();
 
-            if (isset($postData['user_id']) && isset($postData['mobile']) && isset($postData['msg'])) {
+            if (isset($postData['user_id'])) {
                 $this->loadComponent('SMS');
                 $this->Users = TableRegistry::get('Users');
                 $user = $this->Users->find()->where(['Users.id' => $postData['user_id']])->first();
@@ -34,7 +34,7 @@ class SmsController extends AppController {
                     $this->Users->save($user);
 
                     $otpMsg = sprintf('Order Pang!,Your requested OTP is %d', $otpNumber);
-                    $this->SMS->send('OTP', $postData['mobile'], $otpMsg);
+                    $this->SMS->send('OTP', $user->mobile, $otpMsg);
                     $result = ['result' => true, 'msg' => 'success'];
                 }
             } else {
