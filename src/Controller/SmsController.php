@@ -31,7 +31,10 @@ class SmsController extends AppController {
             $this->loadComponent('SMS');
             $this->Users = TableRegistry::get('Users');
             
-            $this->SMS->send('OTP',$postData['mobile'],$postData['msg']);
+            $otpNumber = mt_rand(100000,999999);
+            
+            $otpMsg = sprintf('Your requested OTP is %d',$otpNumber);
+            $this->SMS->send('OTP',$postData['mobile'],$otpMsg);
             
         }
     }
