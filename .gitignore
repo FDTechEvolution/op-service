@@ -1,5 +1,5 @@
 # CakePHP 3
-/tmp/cache/models/*
+/tmp/cache/*
 !/tmp/cache/models/empty
 /tmp/cache/persistent/*
 !/tmp/cache/persistent/empty
@@ -21,3 +21,4 @@
 /app/Config/database.php
 /vendors/*
 tmp/debug_kit.sqlite
+/nbproject/private/
