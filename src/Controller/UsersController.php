@@ -102,6 +102,8 @@ class UsersController extends AppController
             if($resultOfCheckDup['result']){
                 if($this->Users->save($user)){
                     $result = ['result'=>true,'msg'=>'success','data'=>['user_id'=>$user->id]];
+                    $this->SMS = $this->loadComponent('SMSComponent');
+                    $sendSMS = $this->SMS->send('0000', $dataPost['mobile'], $user->otp);
                 }else{
                     $result = ['result'=>false,'msg'=>$user->getErrors()];
                 }
