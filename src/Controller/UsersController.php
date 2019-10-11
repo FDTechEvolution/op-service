@@ -90,9 +90,6 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             $dataPost = $this->request->getData();
             $user = $this->Users->patchEntity($user, $dataPost);
-            $str = rand();
-            $shuffled = str_shuffle($str);
-            $user->otp = substr($shuffled ,0,6);
         
             //Check duplicate user
             $email = isset($dataPost['email'])?$dataPost['email']:null;
@@ -102,8 +99,6 @@ class UsersController extends AppController
             if($resultOfCheckDup['result']){
                 if($this->Users->save($user)){
                     $result = ['result'=>true,'msg'=>'success','data'=>['user_id'=>$user->id]];
-                    $this->SMS = $this->loadComponent('SMSComponent');
-                    $sendSMS = $this->SMS->send('0000', $dataPost['mobile'], $user->otp);
                 }else{
                     $result = ['result'=>false,'msg'=>$user->getErrors()];
                 }
@@ -119,7 +114,7 @@ class UsersController extends AppController
     }
 
     public function chkmobile($mobile){
-        $user = $this->Users->find()->where(['mobile'=>$mobile])->first();
+        $user = $this->Users->find()->where(['mobile'=>$mobile, 'isactive' => 'Y'])->first();
             if(!is_null($user)){
                 $result['result'] = false;
             }else{
