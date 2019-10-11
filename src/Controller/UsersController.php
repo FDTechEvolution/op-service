@@ -141,17 +141,18 @@ class UsersController extends AppController
              * Verify section
              */
             $resultVerify = true;
+            $resultOfCheckDup = [];
             //Check duplicate user
             if(isset($dataPost['email'])){
                 $resultOfCheckDup = $this->checkAlreadyEmail($dataPost['email'], $userId);
-                $resultOfCheckDup = $resultOfCheckDup['result'];
+                $resultVerify = $resultOfCheckDup['result'];
             }
             if(isset($dataPost['mobile'])){
                 $resultOfCheckDup = $this->checkAlreadyMobileNo($dataPost['mobile'], $userId);
-                $resultOfCheckDup = $resultOfCheckDup['result'];
+                $resultVerify = $resultOfCheckDup['result'];
             }
 
-            if($resultOfCheckDup){
+            if($resultVerify){
                 if($this->Users->save($user)){
                     $result = ['result'=>true,'msg'=>'success'];
                 }else{
