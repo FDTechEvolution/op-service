@@ -103,6 +103,27 @@ class OrgsController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function delete($orgId = null){
+
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $org = $this->Orgs->find()->where(['id'=>$orgId])->first();
+            $org->isactive = 'D';
+        
+            if($this->Orgs->save($org)){
+                $result = ['result'=>true,'msg'=>'success'];
+            }else{
+                $result = ['result'=>false,'msg'=>$org->getErrors()];
+            }
+            
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
 
 
 
