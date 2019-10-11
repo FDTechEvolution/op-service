@@ -137,13 +137,21 @@ class UsersController extends AppController
             $dataPost = $this->request->getData();
             $user = $this->Users->patchEntity($user, $dataPost);
         
-            
+            /*
+             * Verify section
+             */
+            $resultVerify = true;
             //Check duplicate user
-            $email = isset($dataPost['email'])?$dataPost['email']:null;
-            $mobile = isset($dataPost['mobile'])?$dataPost['mobile']:null;
-            $resultOfCheckDup = $this->checkDuplicate($email,$mobile,$userId);
+            if(isset($dataPost['email'])){
+                $resultOfCheckDup = $this->checkAlreadyEmail($dataPost['email'], $userId);
+                $resultOfCheckDup = $resultOfCheckDup['result'];
+            }
+            if(isset($dataPost['mobile'])){
+                $resultOfCheckDup = $this->checkAlreadyMobileNo($dataPost['mobile'], $userId);
+                $resultOfCheckDup = $resultOfCheckDup['result'];
+            }
 
-            if($resultOfCheckDup['result']){
+            if($resultOfCheckDup){
                 if($this->Users->save($user)){
                     $result = ['result'=>true,'msg'=>'success'];
                 }else{
@@ -217,5 +225,43 @@ class UsersController extends AppController
         }
 
         return ['result'=>$result,'msg'=>$msg];
+    }
+    
+    private function checkAlreadyEmail($email=null,$userId = null){
+        $result  = ['result'=>true,'msg'=>''];
+        if(is_null($userId)){
+            $user = $this->Users->find()->where(['email'=>$email])->first();
+            if(!is_null($user)){
+                $result['msg'] = "Email can't be duplicate,";
+                $result['result'] = false;
+            }
+        }else{
+            $user = $this->Users->find()->where(['email'=>$email,'id !='=>$userId])->first();
+            if(!is_null($user)){
+                $result['msg'] = "Email can't be duplicate,";
+                $result['result'] = false;
+            }
+        }
+        
+        return $result;
+    }
+    
+    private function checkAlreadyMobileNo($mobileNo=null,$userId = null){
+        $result  = ['result'=>true,'msg'=>''];
+        if(is_null($userId)){
+            $user = $this->Users->find()->where(['mobile'=>$mobileNo])->first();
+            if(!is_null($user)){
+                $result['msg'] = "Mobile no. can't be duplicate,";
+                $result['result'] = false;
+            }
+        }else{
+            $user = $this->Users->find()->where(['mobile'=>$mobileNo,'id !='=>$userId])->first();
+            if(!is_null($user)){
+                $result['msg'] = "Mobile no. can't be duplicate,";
+                $result['result'] = false;
+            }
+        }
+        
+        return $result;
     }
 }
