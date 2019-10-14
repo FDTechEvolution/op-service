@@ -35,11 +35,12 @@ class LoginController extends AppController
     // }
 
     public function index(){
-        $result = ['result'=>false,'msg'=>'please use POST method.'];
+        $result = ['result'=>false,'msg'=>'Mobile or Password is incorrect, please try again.','user'=>[]];
 
         if($this->request->is(['post'])){
             
             $dataPost = $this->request->getData();
+            /*
             $mobile = isset($dataPost['mobile'])?$dataPost['mobile']:null;
             $password = isset($dataPost['password'])?$dataPost['password']:null;
             $resultOfCheckLogin = $this->chkLogin($mobile, $password);
@@ -48,6 +49,14 @@ class LoginController extends AppController
                 $result = $resultOfCheckLogin;
             }else{
                 $result = $resultOfCheckLogin;
+            }
+             * 
+             */
+            $user = $this->Auth->identify();
+            if($user){
+                $result['user'] = $user;
+                $result['result'] = true;
+                $result['msg'] = 'success';
             }
         }
 
