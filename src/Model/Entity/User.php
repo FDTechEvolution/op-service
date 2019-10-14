@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * User Entity
@@ -23,8 +25,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Org $org
  * @property \App\Model\Entity\ShipmentInout[] $shipment_inouts
  */
-class User extends Entity
-{
+class User extends Entity {
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -59,4 +61,9 @@ class User extends Entity
     protected $_hidden = [
         'password'
     ];
+
+    protected function _setPassword($password) {
+        return (new DefaultPasswordHasher)->hash($password);
+    }
+
 }
