@@ -33,7 +33,7 @@ class OrgsController extends AppController
 
     public function getorgs($user = null){
         $user = $this->Users->find()->where(['id' => $user, 'org_id !=' => null])->toArray();
-        if($user){
+        if(sizeof($user) != 0){
             $orgs = $this->Orgs->find()->where(['id' => $user->org_id])->toArray();
         }else{
             $orgs = '';
@@ -73,8 +73,9 @@ class OrgsController extends AppController
                 if($this->Orgs->save($org)){
                     $user = $this->Users->find()->where(['id' => $dataPost['user']])->first();
                     $user->org_id = $org->id;
-                    $this->Users->save($user);
-                    $result = ['result'=>true,'msg'=>'success', 'org' => $org->id];
+                    if($this->Users->save($user)){
+                        $result = ['result'=>true,'msg'=>'success'];
+                    }
                 }else{
                     $result = ['result'=>false,'msg'=>$org->getErrors()];
                 }
