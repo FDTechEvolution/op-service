@@ -57,7 +57,8 @@ class LoginController extends AppController {
             $mobile = isset($dataPost['mobile'])?$dataPost['mobile']:'';
             $password = isset($dataPost['password'])?$dataPost['password']:'';
             if (strlen($password) > 0) {
-                $password = (new DefaultPasswordHasher)->hash($password);
+                $this->loadComponent('MyAuthen');
+                $password = $this->MyAuthen->hashPassword($password);
             }
 
             $user = $this->Users->find()->where(['Users.mobile'=>$mobile,'password'=>$password])->first();
@@ -75,11 +76,22 @@ class LoginController extends AppController {
         $this->set('_serialize', 'json');
     }
     
-    public function chkPassword($password = ''){
+    public function getPassword($password = ''){
         $this->loadComponent('MyAuthen');
         $password = $this->MyAuthen->hashPassword($password);
-        
+        $this->log($password,'debug');
         $result['password'] = $password;
+        
+        $json = json_encode($result, JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+    
+    public function chkPassword($password = '',$hash=''){
+        $this->loadComponent('MyAuthen');
+        $result = $this->MyAuthen->verifyPassword($password,$hash);
+        
+        $result['result'] = $result;
         
         $json = json_encode($result, JSON_PRETTY_PRINT);
         $this->set(compact('json'));
