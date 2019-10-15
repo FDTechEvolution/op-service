@@ -4,7 +4,7 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\Utility\Security;
-
+use Cake\Auth\DefaultPasswordHasher;
 
 class MyAuthenComponent extends Component {
 
@@ -32,7 +32,9 @@ class MyAuthenComponent extends Component {
             'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
             'cost' => 12,
         ];
-        $password = password_hash($password, PASSWORD_BCRYPT, $options);
+        //$password = password_hash($password, PASSWORD_BCRYPT, $options);
+        
+        $password = (new DefaultPasswordHasher)->hash($password);
         
         return $password;
     }
