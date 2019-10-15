@@ -61,7 +61,7 @@ class OrgsController extends AppController
                     $user = $this->Users->find()->where(['id' => $dataPost['user']])->first();
                     $user->org_id = $org->id;
                     $this->Users->save($user);
-                    $result = ['result'=>true,'msg'=>'success'];
+                    $result = ['result'=>true,'msg'=>'success', 'org' => $org->id];
                 }else{
                     $result = ['result'=>false,'msg'=>$org->getErrors()];
                 }
