@@ -39,7 +39,7 @@ class LoginController extends AppController
 
         if($this->request->is(['post'])){
             
-            $dataPost = $this->request->getData();
+            //$dataPost = $this->request->getData();
             /*
             $mobile = isset($dataPost['mobile'])?$dataPost['mobile']:null;
             $password = isset($dataPost['password'])?$dataPost['password']:null;
