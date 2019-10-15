@@ -35,9 +35,14 @@ class OrgsController extends AppController
         $user = $this->Users->find()->where(['id' => $user])->toArray();
         if($user){
             $orgs = $this->Orgs->find()->where(['id' => $user->org_id])->toArray();
+            if($orgs){
+                $org = $orgs;
+            }else{
+                $org = '';
+            }
         }
 
-        $json = json_encode($orgs,JSON_PRETTY_PRINT);
+        $json = json_encode($org,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
