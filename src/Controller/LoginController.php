@@ -74,6 +74,17 @@ class LoginController extends AppController {
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
+    
+    public function chkPassword($password = ''){
+        $this->loadComponent('MyAuthen');
+        $password = $this->MyAuthen->hashPassword($password);
+        
+        $result['password'] = $password;
+        
+        $json = json_encode($result, JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
 
     private function chkLogin($mobile = '', $password = '') {
         $msg = '';

@@ -82,7 +82,7 @@ class UsersController extends AppController
 
 
     public function create(){
-
+        $this->loadComponent('MyAuthen');
         $result = ['result'=>false,'msg'=>'please use POST method.','data'=>[]];
 
         if($this->request->is(['post'])){
@@ -90,6 +90,8 @@ class UsersController extends AppController
             $user = $this->Users->newEntity();
             $dataPost = $this->request->getData();
             $user = $this->Users->patchEntity($user, $dataPost);
+            $password = $this->MyAuthen->hashPassword($dataPost['password']);
+            $user->password = $password;
         
             //Check duplicate user
             $email = isset($dataPost['email'])?$dataPost['email']:null;
