@@ -20,8 +20,8 @@ class OrgsController extends AppController
     }
 
 
-    public function index(){
-        $orgs = $this->Orgs->find()->where(['isactive !='=>'D'])->toArray();
+    public function index($org = null){
+        $orgs = $this->Orgs->find()->where(['id' => $org, 'isactive !='=>'D'])->toArray();
         
         $json = json_encode($orgs,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
