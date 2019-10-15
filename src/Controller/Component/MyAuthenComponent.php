@@ -28,7 +28,7 @@ class MyAuthenComponent extends Component {
 
     public function hashPassword($password = '') {
         $options = [
-            'salt' => Security::salt(),
+            'salt' => Security::getSalt(),
             'cost' => 12,
         ];
         $password = password_hash($password, PASSWORD_BCRYPT, $options);
