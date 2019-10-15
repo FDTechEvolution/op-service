@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 /**
  * Orgs Controller
  *
@@ -16,6 +17,8 @@ class OrgsController extends AppController
         parent::beforeFilter($event);
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
+        $this->Users = TableRegistry::get('Users');
+
     
     }
 
@@ -55,6 +58,9 @@ class OrgsController extends AppController
             
             if($resultOfCheckDup['result']){
                 if($this->Orgs->save($org)){
+                    $user = $this->Users->find()->where(['id' => $dataPost['user']])->first();
+                    $user->org_id = $org->id;
+                    $this->Users->save($user);
                     $result = ['result'=>true,'msg'=>'success'];
                 }else{
                     $result = ['result'=>false,'msg'=>$org->getErrors()];
