@@ -65,6 +65,8 @@ class LoginController extends AppController {
                 $result['user'] = $user;
                 $result['result'] = true;
                 $result['msg'] = 'success';
+            }else{
+                $result['user'] = $mobile.' / '.$password;
             }
         }
 
