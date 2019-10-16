@@ -28,6 +28,20 @@ class ProductCategoriesController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function getcategories($orgId = null)
+    {
+        $productCategories = $this->ProductCategories->find()->where(['org_id' => $orgId, 'isactive !=' => 'D'])->toArray();
+        if(sizeof($productCategories) != 0){
+            $productCategory = $productCategories;
+        }else{
+            $productCategory = '';
+        }
+
+        $json = json_encode($productCategory,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
     public function all($procateId = null)
     {
         $productCategory = $this->ProductCategories->find()->where(['id'=>$procateId, 'isactive !=' => 'D'])->first();
