@@ -30,8 +30,23 @@ class ProductCategoriesController extends AppController
 
     public function getcategories($orgId = null)
     {
-        $productCategories = $this->ProductCategories->find()->where(['org_id' => $orgId, 'isactive !=' => 'D'])->toArray();
-        if(sizeof($productCategories) != 0){
+        $productCategories = $this->ProductCategories->find()
+        ->contain(['Products' => function($q){
+            $q->select([
+                'Products.product_category_id',
+                'Products.name',
+                'Products.code',
+                'Products.cost',
+                'Products.price',
+                'total' => $q->func()->count('Products.product_category_id')
+           ])
+           ->where(['Products.status' => 'ON'])
+           ->group(['Products.product_category_id']);
+           return $q;
+        }])
+        ->where(['org_id' => $orgId, 'isactive !=' => 'D'])->toArray();
+
+        if($productCategories){
             $productCategory = $productCategories;
         }else{
             $productCategory = '';
