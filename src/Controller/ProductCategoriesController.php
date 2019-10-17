@@ -89,6 +89,19 @@ class ProductCategoriesController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function chkname($name, $org){
+        $productCategory = $this->ProductCategories->find()->where(['name' => $name, 'org_id' => $org, 'isactive !=' => 'D'])->first();
+            if(!is_null($productCategory)){
+                $result['result'] = false;
+            }else{
+                $result['result'] = true;
+            }
+
+            $json = json_encode($result,JSON_PRETTY_PRINT);
+            $this->set(compact('json'));
+            $this->set('_serialize', 'json');
+    }
+
 
     public function update($procateId = null){
 
