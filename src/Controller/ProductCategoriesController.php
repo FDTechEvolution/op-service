@@ -16,6 +16,7 @@ class ProductCategoriesController extends AppController
         parent::beforeFilter($event);
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
+        $this->Products = TableRegistry::get('Products');
     
     }
 
@@ -31,27 +32,17 @@ class ProductCategoriesController extends AppController
     public function getcategories($orgId = null)
     {
         $productCategories = $this->ProductCategories->find()
-            ->contain(['Products' => function($q){
-                $q->select([
-                    'Products.product_category_id',
-                    'Products.name',
-                    'Products.code',
-                    'Products.cost',
-                    'Products.price',
-                    'total' => $q->func()->count('Products.product_category_id')
-            ])
-            ->where(['Products.status' => 'ON'])
-            ->group(['Products.product_category_id']);
-            return $q;
-            }])
-            ->where(['ProductCategories.org_id' => $orgId, 'ProductCategories.isactive !=' => 'D'])->toArray();
+            ->where(['org_id' => $orgId, 'isactive !=' => 'D'])->toArray();
+        $newProcate = [];
         if($productCategories){
-            $productCategory = $productCategories;
-        }else{
-            $productCategory = '';
+            foreach($productCategories as $procate){
+                $products = $this->Products->find()->where(['product_category_id' => $procate->id])->toArray();
+                $procate['total'] = count($products);
+                array_push($newProcate,$procate);
+            }
         }
 
-        $json = json_encode($productCategory,JSON_PRETTY_PRINT);
+        $json = json_encode($newProcate,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
