@@ -61,8 +61,8 @@ class ProductsController extends AppController
                         ->toArray();
                 if($products){
                     foreach($products as $product){
-                        $category = $this->Categories->find()->where(['id' => $product->product_category_id, 'isactive !=' => 'D'])->toArray();
-                        $product['category'] = $category->name;
+                        $category = $this->Categories->find()->where(['id' => $product->product_category_id])->toArray();
+                        $product['category'] = $category->category->name;
 
                         array_push($newProduct,$product);
                     }
