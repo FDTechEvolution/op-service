@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 /**
  * Products Controller
  *
@@ -15,6 +16,7 @@ class ProductsController extends AppController
         parent::beforeFilter($event);
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
+        $this->Categories = TableRegistry::get('ProductCategories');
     
     }
 
@@ -50,18 +52,27 @@ class ProductsController extends AppController
             $category = isset($getCategory)?(['product_category_id' => $getCategory]):'';
             $org = isset($getOrg)?(['org_id' => $getOrg]):'';
             $resultListCondution = $this->listCondition($getLimit, $isactive);
+            $newProduct = [];
 
             if($resultListCondution['result']){
                 $products = $this->Products->find()
                         ->where([$isactive, $category, $org, 'status !=' => 'DEL'])
                         ->limit($limit)
                         ->toArray();
+                if($products){
+                    foreach($products as $product){
+                        $category = $this->Categories->find()->where(['id' => $product->product_category_id, 'isactive !=' => 'D'])->toArray();
+                        $product['category'] = $category->name;
+
+                        array_push($newProduct,$product);
+                    }
+                }
             }else{
-                $products = $resultListCondution;
+                $newProduct = $resultListCondution;
             }
         }
 
-        $json = json_encode($products,JSON_PRETTY_PRINT);
+        $json = json_encode($newProduct,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
