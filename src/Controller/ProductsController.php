@@ -53,7 +53,6 @@ class ProductsController extends AppController
 
             if($resultListCondution['result']){
                 $products = $this->Products->find()
-                        ->contain(['ProductCategories'])
                         ->where([$isactive, $category, $org, 'status !=' => 'DEL'])
                         ->limit($limit)
                         ->toArray();
