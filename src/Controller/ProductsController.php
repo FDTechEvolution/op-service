@@ -234,6 +234,7 @@ class ProductsController extends AppController
                                 ])
                             ->first();
             if(!is_null($product)){
+                $status = 1;
                 $msg = "Product Name of Organization and Category can't be duplicate, ";
                 $result = false;
             }
@@ -247,11 +248,12 @@ class ProductsController extends AppController
                                 ])
                             ->first();
             if(!is_null($product)){
+                $status = 2;
                 $msg .= "Product Code of Organization and Category can't be duplicate.";
                 $result = false;
             }
         }
 
-        return ['result'=>$result,'msg'=>$msg];
+        return ['result'=>$result,'msg'=>$msg, 'stat'=>$status];
     }
 }
