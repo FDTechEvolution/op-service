@@ -23,6 +23,14 @@ class GoodsReceiveController extends AppController
 
     }
 
+    public function all($org = null) {
+        $shipment = $this->Shipments->find()->where(['org_id' => $org])->toArray();
+
+        $json = json_encode($shipment,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
     public function create() {
 
         $result = ['result'=>false,'msg'=>'please use POST method.'];
