@@ -29,16 +29,14 @@ class BpartnersController extends AppController
         $this->set('_serialize', 'json');
     }
 
-    public function all($bpartnerId = null)
+    public function all($org = null)
     {
-        $bpartner = $this->Bpartners->find()->where(['id'=>$bpartnerId, 'isactive !=' => 'D'])->first();
+        $bpartner = $this->Bpartners->find()->where(['org_id'=>$org, 'isactive !=' => 'D'])->first();
         
         $json = json_encode($bpartner,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
-
-    
 
     public function create(){
 
