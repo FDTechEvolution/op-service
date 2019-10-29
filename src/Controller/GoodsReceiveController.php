@@ -16,6 +16,8 @@ class GoodsReceiveController extends AppController
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
         $this->Shipments = TableRegistry::get('shipment_inouts');
+        $this->Bpartners = TableRegistry::get('bpartners');
+        $this->Warehouses = TableRegistry::get('warehouses');
     }
 
     public function index()
@@ -24,9 +26,26 @@ class GoodsReceiveController extends AppController
     }
 
     public function all($org = null) {
-        $shipment = $this->Shipments->find()
-        ->contain(['Bpartners'])
-        ->where(['ShipmentInouts.org_id' => $org])->toArray();
+        $shipments = $this->Shipments->find()->where(['org_id' => $org])->toArray();
+
+        $newShipment = [];
+        if($shipments){
+            foreach($shipments as $shipment){
+                $company = '';
+                $bpartners = $this->Bpartners->find()->where(['id' => $shipment->bpartner_id])->toArray();
+                foreach($bpartners as $bpartner){
+                    $company = $bpartner->company;
+                }
+                $shipment['company'] = $company;
+
+                $towarehouse = '';
+                $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->toArray();
+                foreach($warehouses as $warehouse){
+                    $towarehouse = $warehouse->name;
+                }
+                $shipment['towarehouse'] = $towarehouse;
+            }
+        }
 
         $json = json_encode($shipment,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
