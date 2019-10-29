@@ -31,6 +31,7 @@ class GoodsReceiveController extends AppController
             $shipment = $this->Shipments->newEntity();
             $dataPost = $this->request->getData();
             $shipment = $this->Shipments->patchEntity($shipment,$dataPost);
+            $sgipment->docdate = date('Y-m-d');
 
             if($this->Shipments->save($shipment)){
                 $result = ['result'=>true,'msg'=>'success'];
@@ -49,7 +50,7 @@ class GoodsReceiveController extends AppController
         $result = ['result'=>false,'msg'=>'please use POST method.'];
 
         if($this->request->is(['post'])){
-            
+
         }
     }
 
