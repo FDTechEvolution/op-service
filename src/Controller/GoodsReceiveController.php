@@ -36,10 +36,12 @@ class GoodsReceiveController extends AppController
 
                 $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->first();
                 $shipment['towarehouse'] = $warehouses->name;
+
+                array_push($newShipment,$shipment);
             }
         }
 
-        $json = json_encode($shipment,JSON_PRETTY_PRINT);
+        $json = json_encode($newShipment,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
