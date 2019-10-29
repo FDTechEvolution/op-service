@@ -44,4 +44,13 @@ class GoodsReceiveController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function update() {
+
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            
+        }
+    }
+
 }
