@@ -31,19 +31,11 @@ class GoodsReceiveController extends AppController
         $newShipment = [];
         if($shipments){
             foreach($shipments as $shipment){
-                $company = '';
-                $bpartners = $this->Bpartners->find()->where(['id' => $shipment->bpartner_id])->toArray();
-                foreach($bpartners as $bpartner){
-                    $company = $bpartner->company;
-                }
-                $shipment['company'] = $company;
+                $bpartners = $this->Bpartners->find()->where(['id' => $shipment->bpartner_id])->first();
+                $shipment['company'] = $bpartners->company;
 
-                $towarehouse = '';
-                $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->toArray();
-                foreach($warehouses as $warehouse){
-                    $towarehouse = $warehouse->name;
-                }
-                $shipment['towarehouse'] = $towarehouse;
+                $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->first();
+                $shipment['towarehouse'] = $warehouses->name;
             }
         }
 
