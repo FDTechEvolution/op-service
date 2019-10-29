@@ -50,11 +50,14 @@ class ShipmentInoutsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('FromWarehouses', [
-            'foreignKey' => 'from_warehouse_id'
+            'className' => 'Warehouses',
+            'foreignKey' => 'from_warehouse_id',
+            'propertyName' => 'FromWarehouses'
         ]);
         $this->belongsTo('ToWarehouses', [
+            'className' => 'Warehouses',
             'foreignKey' => 'to_warehouse_id',
-            'joinType' => 'INNER'
+            'propertyName' => 'ToWarehouses'
         ]);
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id'
