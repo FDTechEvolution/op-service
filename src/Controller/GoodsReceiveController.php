@@ -84,6 +84,10 @@ class GoodsReceiveController extends AppController
                 $result = ['result'=>false,'msg'=>$lines->getErrors()];
             }
         }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
     }
 
     public function update() {
