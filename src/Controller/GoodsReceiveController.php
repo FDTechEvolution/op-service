@@ -32,6 +32,7 @@ class GoodsReceiveController extends AppController
             $dataPost = $this->request->getData();
             $shipment = $this->Shipments->patchEntity($shipment,$dataPost);
             $shipment->docdate = date('Y-m-d');
+            $shipment->status = 'DR';
 
             if($this->Shipments->save($shipment)){
                 $result = ['result'=>true,'msg'=>'success'];
