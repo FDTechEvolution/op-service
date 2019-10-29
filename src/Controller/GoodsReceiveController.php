@@ -25,7 +25,7 @@ class GoodsReceiveController extends AppController
 
     public function all($org = null) {
         $shipment = $this->Shipments->find()
-        ->contain(['Bpartners', 'Warehouses'])
+        ->contain(['Bpartners'])
         ->where(['org_id' => $org])->toArray();
 
         $json = json_encode($shipment,JSON_PRETTY_PRINT);
