@@ -16,6 +16,7 @@ class GoodsReceiveController extends AppController
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
         $this->Shipments = TableRegistry::get('shipment_inouts');
+        $this->Lines = TableRegistry::get('shipment_inout_lines');
         $this->Bpartners = TableRegistry::get('bpartners');
         $this->Warehouses = TableRegistry::get('warehouses');
     }
@@ -67,6 +68,22 @@ class GoodsReceiveController extends AppController
         $json = json_encode($result,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
+    }
+
+    public function createline() {
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $lines = $this->Lines->newEntity();
+            $dataPost = $this->request->getData();
+            $lines = $this->Lines->patchEntity($lines, $dataPost);
+
+            if($this->Lines->save($lines)){
+                $result = ['result'=>true,'msg'=>'success'];
+            }else{
+                $result = ['result'=>false,'msg'=>$lines->getErrors()];
+            }
+        }
     }
 
     public function update() {
