@@ -134,10 +134,16 @@ class GoodsReceiveController extends AppController
             $shipment = $this->Shipments->find()->where(['id' => $id])->first();
             $shipment->status = 'CO';
 
-            if($this->Shipments->save($shipment)){
-                $result = ['result'=>true,'msg'=>'success'];
+            $resultOfCheckConfirm = $this->chkconfirm($id);
+
+            if($resultOfCheckConfirm['result']){
+                if($this->Shipments->save($shipment)){
+                    $result = ['result'=>true,'msg'=>'success'];
+                }else{
+                    $result = ['result'=>false,'msg'=>$order->getErrors()];
+                }
             }else{
-                $result = ['result'=>false,'msg'=>$order->getErrors()];
+                $result = $resultOfCheckConfirm;
             }
         }
 
@@ -170,6 +176,20 @@ class GoodsReceiveController extends AppController
         $json = json_encode($result,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
+    }
+
+
+    private function chkconfirm($id) {
+        $msg = '';
+        $result = true;
+
+        $lines = $this->Lines->find()->where(['shipment_inout_id' => $id])->first();
+        if(sizeof($line) == 0){
+            $msg = "Shipment Line not null.";
+            $result = false;
+        }
+
+        return ['result'=>$result,'msg'=>$msg];
     }
 
 }
