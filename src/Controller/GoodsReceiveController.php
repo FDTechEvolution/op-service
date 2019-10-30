@@ -183,7 +183,7 @@ class GoodsReceiveController extends AppController
         $msg = '';
         $result = true;
 
-        $lines = $this->Lines->find()->where(['shipment_inout_id' => $id])->first();
+        $lines = $this->Lines->find()->where(['shipment_inout_id' => $id])->toArray();
         if(sizeof($lines) == 0){
             $msg = "Shipment Line not null.";
             $result = false;
