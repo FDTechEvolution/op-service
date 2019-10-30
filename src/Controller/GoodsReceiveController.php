@@ -28,7 +28,7 @@ class GoodsReceiveController extends AppController
     }
 
     public function all($org = null) {
-        $shipments = $this->Shipments->find()->where(['org_id' => $org])->toArray();
+        $shipments = $this->Shipments->find()->where(['org_id' => $org, 'status !=' => 'VO'])->toArray();
 
         $newShipment = [];
         if($shipments){
@@ -63,6 +63,25 @@ class GoodsReceiveController extends AppController
                 $result = ['result'=>true,'msg'=>'success'];
             }else{
                 $result = ['result'=>false,'msg'=>$shipment->getErrors()];
+            }
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function shipmentdel($id) {
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $shipment = $this->Shipments->find()->where(['id' => $id])->first();
+            $shipment->status = 'VO';
+
+            if($this->Shipments->save($shipment)){
+                $result = ['result'=>true,'msg'=>'success'];
+            }else{
+                $result = ['result'=>false,'msg'=>$order->getErrors()];
             }
         }
 
