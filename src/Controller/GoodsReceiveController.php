@@ -117,4 +117,21 @@ class GoodsReceiveController extends AppController
         }
     }
 
+    public function delete($id) {
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $lines = $this->Lines->get($id);
+            if ($this->Lines->delete($lines)) {
+                $result = ['result'=>true,'msg'=>'success'];
+            } else {
+                $result = ['result'=>false,'msg'=>$lines->getErrors()];
+            }
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
 }
