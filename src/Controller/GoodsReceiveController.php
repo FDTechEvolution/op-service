@@ -19,6 +19,7 @@ class GoodsReceiveController extends AppController
         $this->Lines = TableRegistry::get('shipment_inout_lines');
         $this->Bpartners = TableRegistry::get('bpartners');
         $this->Warehouses = TableRegistry::get('warehouses');
+        $this->Products = TableRegistry::get('products');
     }
 
     public function index()
@@ -86,6 +87,23 @@ class GoodsReceiveController extends AppController
         }
 
         $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+    public function shipmentline($shipment) {
+        $lines = $this->Lines->find()->where(['shipment_inout_id' => $shipment])->toArray();
+        $newLines = [];
+        if($lines){
+            foreach($lines as $line){
+                $product = $this->Products->find()->where(['id' => $line->product_id])->first();
+                $line['product'] = $product->name;
+
+                array_push($newLines,$line);
+            }
+        }
+
+        $json = json_encode($newLines,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
