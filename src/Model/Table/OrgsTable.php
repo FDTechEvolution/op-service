@@ -12,9 +12,12 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\BpartnersTable&\Cake\ORM\Association\HasMany $Bpartners
  * @property \App\Model\Table\BrandsTable&\Cake\ORM\Association\HasMany $Brands
  * @property \App\Model\Table\CustomersTable&\Cake\ORM\Association\HasMany $Customers
+ * @property &\Cake\ORM\Association\HasMany $OrderLines
+ * @property &\Cake\ORM\Association\HasMany $Orders
  * @property \App\Model\Table\OrgSettingsTable&\Cake\ORM\Association\HasMany $OrgSettings
  * @property \App\Model\Table\ProductCategoriesTable&\Cake\ORM\Association\HasMany $ProductCategories
  * @property \App\Model\Table\ProductsTable&\Cake\ORM\Association\HasMany $Products
+ * @property &\Cake\ORM\Association\HasMany $RawOrders
  * @property \App\Model\Table\ShipmentInoutsTable&\Cake\ORM\Association\HasMany $ShipmentInouts
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\HasMany $Users
  * @property \App\Model\Table\WarehousesTable&\Cake\ORM\Association\HasMany $Warehouses
@@ -57,6 +60,12 @@ class OrgsTable extends Table
         $this->hasMany('Customers', [
             'foreignKey' => 'org_id'
         ]);
+        $this->hasMany('OrderLines', [
+            'foreignKey' => 'org_id'
+        ]);
+        $this->hasMany('Orders', [
+            'foreignKey' => 'org_id'
+        ]);
         $this->hasMany('OrgSettings', [
             'foreignKey' => 'org_id'
         ]);
@@ -64,6 +73,9 @@ class OrgsTable extends Table
             'foreignKey' => 'org_id'
         ]);
         $this->hasMany('Products', [
+            'foreignKey' => 'org_id'
+        ]);
+        $this->hasMany('RawOrders', [
             'foreignKey' => 'org_id'
         ]);
         $this->hasMany('ShipmentInouts', [
@@ -103,6 +115,11 @@ class OrgsTable extends Table
         $validator
             ->scalar('isactive')
             ->allowEmptyString('isactive');
+
+        $validator
+            ->scalar('address')
+            ->requirePresence('address', 'create')
+            ->notEmptyString('address');
 
         $validator
             ->uuid('createdby')

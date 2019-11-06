@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string|null $code
  * @property string|null $isactive
+ * @property string $address
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property string|null $createdby
@@ -40,6 +41,7 @@ class Org extends Entity
         'name' => true,
         'code' => true,
         'isactive' => true,
+        'address' => true,
         'created' => true,
         'modified' => true,
         'createdby' => true,

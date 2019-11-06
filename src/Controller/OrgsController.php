@@ -56,7 +56,6 @@ class OrgsController extends AppController
 
         $result = ['result'=>false,'msg'=>'please use POST method.'];
 
-
         if($this->request->is(['post'])){
 
             $org = $this->Orgs->newEntity();
@@ -66,7 +65,9 @@ class OrgsController extends AppController
             //Check duplicate org
             $name = isset($dataPost['name'])?$dataPost['name']:null;
             $code = isset($dataPost['code'])?$dataPost['code']:null;
-            $resultOfCheckDup = $this->checkDuplicate($name,$code);
+            $orgID = isset($dataPost['org'])?$dataPost['org']:null;
+            $userID = isset($dataPost['user'])?$dataPost['user']:null;
+            $resultOfCheckDup = $this->checkDuplicate($name,$code,$orgID,$userID);
             
             if($resultOfCheckDup['result']){
                 if($this->Orgs->save($org)){
@@ -99,6 +100,7 @@ class OrgsController extends AppController
             $org = $this->Orgs->find()->where(['id'=>$orgId])->first();
             $dataPost = $this->request->getData();
             $org = $this->Orgs->patchEntity($org, $dataPost);
+            $this->log($dataPost, 'debug');
         
             //Check duplicate org
             $name = isset($dataPost['name'])?$dataPost['name']:null;
@@ -149,7 +151,7 @@ class OrgsController extends AppController
     /**
     * PRIVATE SECTION
     **/
-    private function checkDuplicate($name = '',$code = '',$orgId = null){
+    private function checkDuplicate($name = '',$code = '',$orgId = null, $userId = ''){
         //$this->Orgs = TableRegistry::get('Orgs');
         $msg = '';
         $result = true;
