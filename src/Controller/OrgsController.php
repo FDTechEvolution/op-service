@@ -61,27 +61,37 @@ class OrgsController extends AppController
             $org = $this->Orgs->newEntity();
             $dataPost = $this->request->getData();
             $org = $this->Orgs->patchEntity($org, $dataPost);
-        
-            //Check duplicate org
-            $name = isset($dataPost['name'])?$dataPost['name']:null;
-            $code = isset($dataPost['code'])?$dataPost['code']:null;
-            $orgID = isset($dataPost['org'])?$dataPost['org']:null;
-            $userID = isset($dataPost['user'])?$dataPost['user']:null;
-            $resultOfCheckDup = $this->checkDuplicate($name,$code,$orgID,$userID);
-            
-            if($resultOfCheckDup['result']){
-                if($this->Orgs->save($org)){
-                    $user = $this->Users->find()->where(['id' => $dataPost['user']])->first();
-                    $user->org_id = $org->id;
-                    if($this->Users->save($user)){
-                        $result = ['result'=>true,'msg'=>'success'];
-                    }
-                }else{
-                    $result = ['result'=>false,'msg'=>$org->getErrors()];
+
+            if($this->Orgs->save($org)){
+                $user = $this->Users->find()->where(['id' => $dataPost['user']])->first();
+                $user->org_id = $org->id;
+                if($this->Users->save($user)){
+                    $result = ['result'=>true,'msg'=>'success'];
                 }
             }else{
-                $result = $resultOfCheckDup;
+                $result = ['result'=>false,'msg'=>$org->getErrors()];
             }
+        
+            //Check duplicate org
+            // $name = isset($dataPost['name'])?$dataPost['name']:null;
+            // $code = isset($dataPost['code'])?$dataPost['code']:null;
+            // $orgID = isset($dataPost['org'])?$dataPost['org']:null;
+            // $userID = isset($dataPost['user'])?$dataPost['user']:null;
+            // $resultOfCheckDup = $this->checkDuplicate($name,$code,$orgID,$userID);
+            
+            // if($resultOfCheckDup['result']){
+            //     if($this->Orgs->save($org)){
+            //         $user = $this->Users->find()->where(['id' => $dataPost['user']])->first();
+            //         $user->org_id = $org->id;
+            //         if($this->Users->save($user)){
+            //             $result = ['result'=>true,'msg'=>'success'];
+            //         }
+            //     }else{
+            //         $result = ['result'=>false,'msg'=>$org->getErrors()];
+            //     }
+            // }else{
+            //     $result = $resultOfCheckDup;
+            // }
             
         }
 
@@ -100,22 +110,27 @@ class OrgsController extends AppController
             $org = $this->Orgs->find()->where(['id'=>$orgId])->first();
             $dataPost = $this->request->getData();
             $org = $this->Orgs->patchEntity($org, $dataPost);
-            $this->log($dataPost, 'debug');
+
+            if($this->Orgs->save($org)){
+                $result = ['result'=>true,'msg'=>'success'];
+            }else{
+                $result = ['result'=>false,'msg'=>$org->getErrors()];
+            }
         
             //Check duplicate org
-            $name = isset($dataPost['name'])?$dataPost['name']:null;
-            $code = isset($dataPost['code'])?$dataPost['code']:null;
-            $resultOfCheckDup = $this->checkDuplicate($name,$code,$orgId);
+            // $name = isset($dataPost['name'])?$dataPost['name']:null;
+            // $code = isset($dataPost['code'])?$dataPost['code']:null;
+            // $resultOfCheckDup = $this->checkDuplicate($name,$code,$orgId);
 
-            if($resultOfCheckDup['result']){
-                if($this->Orgs->save($org)){
-                    $result = ['result'=>true,'msg'=>'success'];
-                }else{
-                    $result = ['result'=>false,'msg'=>$org->getErrors()];
-                }
-            }else{
-                $result = $resultOfCheckDup;
-            }
+            // if($resultOfCheckDup['result']){
+            //     if($this->Orgs->save($org)){
+            //         $result = ['result'=>true,'msg'=>'success'];
+            //     }else{
+            //         $result = ['result'=>false,'msg'=>$org->getErrors()];
+            //     }
+            // }else{
+            //     $result = $resultOfCheckDup;
+            // }
             
         }
 
