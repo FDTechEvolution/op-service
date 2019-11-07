@@ -207,7 +207,7 @@ class ProductsController extends AppController
                                 ])
                             ->first();
             if(!is_null($product)){
-                $msg = "Product Name of Organization and Category can't be duplicate, ";
+                $msg = "Name Duplicate";
                 $result = false;
             }
             $product = $this->Products->find()
@@ -219,7 +219,7 @@ class ProductsController extends AppController
                                 ])
                             ->first();
             if(!is_null($product)){
-                $msg .= "Product Code of Organization and Category can't be duplicate.";
+                $msg .= "Code Duplicate";
                 $result = false;
             }
 
