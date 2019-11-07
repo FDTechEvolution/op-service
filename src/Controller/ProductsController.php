@@ -234,8 +234,7 @@ class ProductsController extends AppController
                                 ])
                             ->first();
             if(!is_null($product)){
-                $status = 1;
-                $msg = "Product Name of Organization and Category can't be duplicate, ";
+                $msg = "Name Duplicate";
                 $result = false;
             }
             $product = $this->Products->find()
@@ -248,12 +247,11 @@ class ProductsController extends AppController
                                 ])
                             ->first();
             if(!is_null($product)){
-                $status = 2;
-                $msg .= "Product Code of Organization and Category can't be duplicate.";
+                $msg .= "Code Duplicate";
                 $result = false;
             }
         }
 
-        return ['result'=>$result,'msg'=>$msg, 'stat'=>$status];
+        return ['result'=>$result,'msg'=>$msg];
     }
 }
