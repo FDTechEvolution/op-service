@@ -155,7 +155,7 @@ class BrandsController extends AppController
 
         if($this->request->is(['post'])){
             $brand = $this->Brands->find()->where(['id'=>$brandId])->first();
-            $brand->isactive = 'D';
+            $brand->status = 'DEL';
         
             if($this->Brands->save($brand)){
                 $result = ['result'=>true,'msg'=>'success'];
