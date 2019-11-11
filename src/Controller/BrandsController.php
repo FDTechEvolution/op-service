@@ -61,7 +61,7 @@ class BrandsController extends AppController
                         ->toArray();
                         if($brands){
                             foreach($brands as $brand){
-                                $products = $this->Products->find()->where(['brand_id' => $orand->id])->toArray();
+                                $products = $this->Products->find()->where(['brand_id' => $brand->id])->toArray();
                                 $brand['products'] = count($products);
 
                                 array_push($newBrand,$brand);
