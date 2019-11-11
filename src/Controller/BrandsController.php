@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Brands Controller
@@ -16,6 +17,7 @@ class BrandsController extends AppController
         parent::beforeFilter($event);
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
+        $this->Products = TableRegistry::get('products');
     
     }
 
@@ -51,17 +53,26 @@ class BrandsController extends AppController
             $org = isset($getOrg)?(['org_id' => $getOrg]):'';
             $resultListCondution = $this->listCondition($getLimit, $isactive);
 
+            $newBrand = [];
             if($resultListCondution['result']){
                 $brands = $this->Brands->find()
                         ->where([$isactive, $org, 'status !=' => 'DEL'])
                         ->limit($limit)
                         ->toArray();
+                        if($brands){
+                            foreach($brands as $brand){
+                                $products = $this->Products->find()->where(['brand_id' => $orand->id])->toArray();
+                                $brand['products'] = count($products);
+
+                                array_push($newBrand,$brand);
+                            }
+                        }
             }else{
-                $brands = $resultListCondution;
+                $newBrand = $resultListCondution;
             }
         }
 
-        $json = json_encode($brands,JSON_PRETTY_PRINT);
+        $json = json_encode($newBrand,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
