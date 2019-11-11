@@ -43,6 +43,7 @@ class ProductsController extends AppController
         $getActive = $this->request->getQuery('active');
         $getLimit = $this->request->getQuery('limit');
         $getCategory = $this->request->getQuery('category');
+        $getBrand = $this->request->getQuery('brand');
 
         if(is_null($getOrg) && is_null($getActive) && is_null($getLimit) && is_null($getCategory)){
             $products = $this->Products->find()->where(['status !=' => 'DEL'])->toArray();
@@ -50,13 +51,14 @@ class ProductsController extends AppController
             $isactive = isset($getActive)?($getActive == 'yes'?(['isactive' => 'Y']):($getActive == 'no'?(['isactive' => 'N']):false)) : true;
             $limit = isset($getLimit)?$limit = $getLimit:$limit = 100;
             $category = isset($getCategory)?(['product_category_id' => $getCategory]):'';
+            $brand = isset($getBrand)?(['brand_id' => $getBrand]):'';
             $org = isset($getOrg)?(['org_id' => $getOrg]):'';
             $resultListCondution = $this->listCondition($getLimit, $isactive);
             $newProduct = [];
 
             if($resultListCondution['result']){
                 $products = $this->Products->find()
-                        ->where([$isactive, $category, $org, 'status !=' => 'DEL'])
+                        ->where([$isactive, $category, $brand, $org, 'status !=' => 'DEL'])
                         ->limit($limit)
                         ->toArray();
                 if($products){
