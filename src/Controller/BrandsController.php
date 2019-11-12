@@ -169,7 +169,14 @@ class BrandsController extends AppController
             $brand->status = 'DEL';
         
             if($this->Brands->save($brand)){
-                $result = ['result'=>true,'msg'=>'success'];
+                $product = $this->Products->find()->where(['brand_id' => $brandId])->toArray();
+                $product->status = 'DEL';
+            
+                if($this->Products->save($product)){
+                    $result = ['result'=>true,'msg'=>'success'];
+                }else{
+                    $result = ['result'=>false,'msg'=>$product->getErrors()];
+                }
             }else{
                 $result = ['result'=>false,'msg'=>$brand->getErrors()];
             }
