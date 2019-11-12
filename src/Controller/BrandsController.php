@@ -169,7 +169,7 @@ class BrandsController extends AppController
             $brand->status = 'DEL';
         
             if($this->Brands->save($brand)){
-                $product = $this->Products->find()->where(['brand_id' => $brandId])->toArray();
+                $product = $this->Products->find()->where(['brand_id' => $brandId])->first();
                 $product->status = 'DEL';
             
                 if($this->Products->save($product)){
