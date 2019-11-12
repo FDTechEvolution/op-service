@@ -169,18 +169,15 @@ class BrandsController extends AppController
             $brand->status = 'DEL';
         
             if($this->Brands->save($brand)){
-                $product = $this->Products->find()->where(['brand_id' => $brandId])->first();
-                $product->status = 'DEL';
-            
-                if($this->Products->save($product)){
-                    $result = ['result'=>true,'msg'=>'success'];
-                }else{
-                    $result = ['result'=>false,'msg'=>$product->getErrors()];
+                $products = $this->Products->find()->where(['brand_id' => $brandId])->toArray();
+                foreach($products as $product){
+                    $product->status = 'DEL';
+                    $this->Products->save($product);
                 }
+                $result = ['result'=>true,'msg'=>'success'];
             }else{
                 $result = ['result'=>false,'msg'=>$brand->getErrors()];
             }
-            
         }
 
         $json = json_encode($result,JSON_PRETTY_PRINT);
