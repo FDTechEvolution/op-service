@@ -32,7 +32,7 @@ class ProductCategoriesController extends AppController
     public function getcategories($orgId = null)
     {
         $productCategories = $this->ProductCategories->find()
-            ->where(['org_id' => $orgId, 'isactive =' => 'Y'])->toArray();
+            ->where(['org_id' => $orgId, 'isactive !=' => 'D'])->toArray();
         $newProcate = [];
         if($productCategories){
             foreach($productCategories as $procate){
