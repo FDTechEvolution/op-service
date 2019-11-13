@@ -196,14 +196,13 @@ class BrandsController extends AppController
         $result = true;
 
         if(is_null($brandId)){
-            $brand = $this->Brands->find()->where(['name'=>$name, 'org_id'=>$orgId])->first();
+            $brand = $this->Brands->find()->where(['name'=>$name, 'org_id'=>$orgId, 'status !=' => 'DEL'])->first();
             if(!is_null($brand)){
                 $msg .= "Brand name of Organization can't be duplicate.";
                 $result = false;
             }
-
         }else{
-            $brand = $this->Brands->find()->where(['name'=>$name, 'org_id'=>$orgId, 'id !='=>$brandId])->first();
+            $brand = $this->Brands->find()->where(['name'=>$name, 'org_id'=>$orgId, 'id !='=>$brandId, 'status !=' => 'DEL'])->first();
             if(!is_null($brand)){
                 $msg .= "Brand name of Organization can't be duplicate.";
                 $result = false;
