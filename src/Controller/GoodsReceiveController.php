@@ -40,9 +40,9 @@ class GoodsReceiveController extends AppController
                 $shipment['towarehouse'] = $warehouses->name;
 
                 $exDocdate = explode("T", $shipment->docdate);
-                $docdate = explode("-", $exDocdate[0]);
+                $docdate = explode("/", $exDocdate[0]);
 
-                $shipment['date'] = $exDocdate;
+                $shipment['date'] = $docdate[2]."-".$docdate[1]."-".$docdate[0];
 
                 array_push($newShipment,$shipment);
             }
