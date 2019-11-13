@@ -17,6 +17,7 @@ class ProductsController extends AppController
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
         $this->Categories = TableRegistry::get('ProductCategories');
+        $this->Brands = TableRegistry::get('brands');
     
     }
 
@@ -65,6 +66,9 @@ class ProductsController extends AppController
                     foreach($products as $product){
                         $category = $this->Categories->find()->where(['id' => $product->product_category_id])->first();
                         $product['category'] = $category->name;
+
+                        $brand = $this->Brands->find()->where(['id' => $product->brand_id])->first();
+                        $product['brand'] = $brand->name;
 
                         array_push($newProduct,$product);
                     }
