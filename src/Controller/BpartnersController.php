@@ -166,34 +166,34 @@ class BpartnersController extends AppController
         $result = true;
 
         if(is_null($bpartnerId)){ //create
-            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'company' => $company])->first();
+            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'company' => $company, 'status !=' => 'DEL'])->first();
             if(!is_null($bpartner)){
                 $msg = "Partner company of Organization can't be duplicate, ";
                 $result = false;
             }
-            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'name' => $name])->first();
+            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'name' => $name, 'status !=' => 'DEL'])->first();
             if(!is_null($bpartner)){
                 $msg .= "Partner name of Organization can't be duplicate, ";
                 $result = false;
             }
-            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'mobile' => $mobile])->first();
+            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'mobile' => $mobile, 'status !=' => 'DEL'])->first();
             if(!is_null($bpartner)){
                 $msg .= "Partner mobile of Organization can't be duplicate.";
                 $result = false;
             }
 
         }else{ //update
-            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'company' => $company, 'id !='=>$bpartnerId])->first();
+            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId , 'company' => $company, 'id !='=>$bpartnerId, 'status !=' => 'DEL'])->first();
             if(!is_null($bpartner)){
                 $msg = "Partner company of Organization can't be duplicate, ";
                 $result = false;
             }
-            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId ,'name'=>$name, 'id !='=>$bpartnerId])->first();
+            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId ,'name'=>$name, 'id !='=>$bpartnerId, 'status !=' => 'DEL'])->first();
             if(!is_null($bpartner)){
                 $msg .= "Partner name of Organization can't be duplicate, ";
                 $result = false;
             }
-            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId ,'mobile'=>$mobile, 'id !='=>$bpartnerId])->first();
+            $bpartner = $this->Bpartners->find()->where(['org_id'=>$orgId ,'mobile'=>$mobile, 'id !='=>$bpartnerId, 'status !=' => 'DEL'])->first();
             if(!is_null($bpartner)){
                 $msg .= "Partner mobile of Organization can't be duplicate.";
                 $result = false;
