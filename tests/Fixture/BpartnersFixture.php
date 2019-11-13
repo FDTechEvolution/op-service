@@ -25,6 +25,7 @@ class BpartnersFixture extends TestFixture
         'created' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'isactive' => ['type' => 'string', 'length' => null, 'null' => false, 'default' => 'Y', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'status' => ['type' => 'string', 'length' => 3, 'null' => false, 'default' => 'ON', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -43,16 +44,17 @@ class BpartnersFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => '520cf872-9307-4f74-b146-ba9ddb30a956',
-                'org_id' => '604d0b27-1714-47c8-a45e-a84082fb753a',
+                'id' => '26f296b6-5e8a-4e61-b584-12e257a3ab1d',
+                'org_id' => 'fc241cda-d4f6-46ee-b099-b2aed0862379',
                 'company' => 'Lorem ipsum dolor sit amet',
                 'name' => 'Lorem ipsum dolor sit amet',
                 'mobile' => 'Lorem ipsum dolor ',
                 'level' => 'Lorem ipsum dolor sit amet',
                 'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created' => '2019-08-26 06:09:05',
-                'modified' => '2019-08-26 06:09:05',
-                'isactive' => 'Lorem ipsum dolor sit amet'
+                'created' => '2019-11-13 07:28:43',
+                'modified' => '2019-11-13 07:28:43',
+                'isactive' => 'Lorem ipsum dolor sit amet',
+                'status' => 'L'
             ],
         ];
         parent::init();

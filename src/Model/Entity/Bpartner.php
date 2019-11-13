@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $created
  * @property \Cake\I18n\FrozenTime $modified
  * @property string $isactive
+ * @property string $status
  *
  * @property \App\Model\Entity\Org $org
  * @property \App\Model\Entity\BpartnerAddress[] $bpartner_addresses
@@ -42,6 +43,7 @@ class Bpartner extends Entity
         'created' => true,
         'modified' => true,
         'isactive' => true,
+        'status' => true,
         'org' => true,
         'bpartner_addresses' => true,
         'shipment_inouts' => true

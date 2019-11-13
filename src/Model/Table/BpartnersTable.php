@@ -96,6 +96,11 @@ class BpartnersTable extends Table
             ->scalar('isactive')
             ->notEmptyString('isactive');
 
+        $validator
+            ->scalar('status')
+            ->maxLength('status', 3)
+            ->notEmptyString('status');
+
         return $validator;
     }
 
