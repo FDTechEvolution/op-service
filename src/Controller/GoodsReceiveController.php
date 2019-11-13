@@ -42,7 +42,7 @@ class GoodsReceiveController extends AppController
                 $exDocdate = explode("T", $shipment->docdate);
                 $docdate = explode("-", $exDocdate[0]);
 
-                $shipment['date'] = $docdate[2]."-".$docdate[1]."-".$docdate[0];
+                $shipment['date'] = $exDocdate;
 
                 array_push($newShipment,$shipment);
             }
