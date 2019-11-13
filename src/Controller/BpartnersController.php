@@ -31,7 +31,7 @@ class BpartnersController extends AppController
 
     public function all($org = null)
     {
-        $bpartner = $this->Bpartners->find()->where(['org_id'=>$org, 'isactive !=' => 'D'])->toArray();
+        $bpartner = $this->Bpartners->find()->where(['org_id'=>$org, 'status !=' => 'DEL'])->toArray();
         
         $json = json_encode($bpartner,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
