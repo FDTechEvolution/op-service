@@ -68,6 +68,7 @@ class BpartnersController extends AppController
                     $this->Addresses = TableRegistry::get('Addresses');
                     $address = $this->Addresses->newEntity();
                     $address = $this->Addresses->patchEntity($address, $dataPost);
+                    $address->description = $dataPost['addressDescription'];
                     if($this->Addresses->save($address)){
                         $addrId = $address->id;
                         $this->bpartnerAddr = TableRegistry::get('Bpartner_Addresses');
