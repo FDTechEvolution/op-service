@@ -39,6 +39,8 @@ class GoodsReceiveController extends AppController
                 $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->first();
                 $shipment['towarehouse'] = $warehouses->name;
 
+                $shipment['date'] = $shipment->docdate;
+
                 array_push($newShipment,$shipment);
             }
         }
