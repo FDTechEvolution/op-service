@@ -35,7 +35,7 @@ class GoodsReceiveController extends AppController
             $shipments = $this->Shipments->find()->where(['status !=' => 'VO'])->order(['created' => 'DESC'])->toArray();
         }else{
             $org = isset($getOrg)?(['org_id' => $getOrg]):'';
-            $shipmentID = isset($getShipment)?(['org_id' => $getShipment]):'';
+            $shipmentID = isset($getShipment)?(['id' => $getShipment]):'';
 
             $newShipment = [];
             $shipments = $this->Shipments->find()
