@@ -69,7 +69,7 @@ class GoodsReceiveController extends AppController
             $shipment->status = 'DR';
 
             if($this->Shipments->save($shipment)){
-                $result = ['result'=>true,'msg'=>$shipment->id];
+                $result = $shipment;
             }else{
                 $result = ['result'=>false,'msg'=>$shipment->getErrors()];
             }
