@@ -40,6 +40,7 @@ class GoodsReceiveController extends AppController
             $newShipment = [];
             $shipments = $this->Shipments->find()
                         ->where([$org, $shipmentID, 'status !=' => 'VO'])
+                        ->order(['created' => 'DESC'])
                         ->toArray();
 
             if($shipments){
