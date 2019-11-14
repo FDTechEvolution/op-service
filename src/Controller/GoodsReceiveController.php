@@ -28,27 +28,38 @@ class GoodsReceiveController extends AppController
 
     }
 
-    public function all($org = null) {
-        $shipments = $this->Shipments->find()->where(['org_id' => $org, 'status !=' => 'VO'])->order(['created' => 'DESC'])->toArray();
+    public function all() {
+        $getOrg = $this->request->getQuery('org');
+        $getShipment = $this->request->getQuery('shipment');
+        if(is_null($getShipment) && is_null($getOrg)){
+            $shipments = $this->Shipments->find()->where(['status !=' => 'VO'])->order(['created' => 'DESC'])->toArray();
+        }else{
+            $org = isset($getOrg)?(['org_id' => $getOrg]):'';
+            $shipmentID = isset($getShipment)?(['org_id' => $getShipment]):'';
 
-        $newShipment = [];
-        if($shipments){
-            foreach($shipments as $shipment){
-                $bpartners = $this->Bpartners->find()->where(['id' => $shipment->bpartner_id])->first();
-                $shipment['company'] = $bpartners->company;
+            $newShipment = [];
+            $shipments = $this->Shipments->find()
+                        ->where([$org, $shipmentID, 'status !=' => 'VO'])
+                        ->toArray();
 
-                $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->first();
-                $shipment['towarehouse'] = $warehouses->name;
+            if($shipments){
+                foreach($shipments as $shipment){
+                    $bpartners = $this->Bpartners->find()->where(['id' => $shipment->bpartner_id])->first();
+                    $shipment['company'] = $bpartners->company;
 
-                $users = $this->Users->find()->where(['id' => $shipment->user_id])->first();
-                $shipment['user'] = $users->name;
+                    $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->first();
+                    $shipment['towarehouse'] = $warehouses->name;
 
-                $exDocdate = explode("T", $shipment->docdate);
-                $docdate = explode("/", $exDocdate[0]);
+                    $users = $this->Users->find()->where(['id' => $shipment->user_id])->first();
+                    $shipment['user'] = $users->name;
 
-                $shipment['date'] = $docdate[1]."-".$docdate[0]."-20".$docdate[2];
+                    $exDocdate = explode("T", $shipment->docdate);
+                    $docdate = explode("/", $exDocdate[0]);
 
-                array_push($newShipment,$shipment);
+                    $shipment['date'] = $docdate[1]."-".$docdate[0]."-20".$docdate[2];
+
+                    array_push($newShipment,$shipment);
+                }
             }
         }
 
@@ -69,7 +80,7 @@ class GoodsReceiveController extends AppController
             $shipment->status = 'DR';
 
             if($this->Shipments->save($shipment)){
-                $result = $shipment;
+                $result = ['result'=>true,'msg'=>$shipment->id];
             }else{
                 $result = ['result'=>false,'msg'=>$shipment->getErrors()];
             }
