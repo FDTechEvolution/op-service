@@ -20,6 +20,7 @@ class GoodsReceiveController extends AppController
         $this->Bpartners = TableRegistry::get('bpartners');
         $this->Warehouses = TableRegistry::get('warehouses');
         $this->Products = TableRegistry::get('products');
+        $this->Users = TableRegistry::get('users');
     }
 
     public function index()
@@ -38,6 +39,9 @@ class GoodsReceiveController extends AppController
 
                 $warehouses = $this->Warehouses->find()->where(['id' => $shipment->to_warehouse_id])->first();
                 $shipment['towarehouse'] = $warehouses->name;
+
+                $users = $this->Users->find()->where(['id' => $shipment->user_id])->first();
+                $shipment['user'] = $users->name;
 
                 $exDocdate = explode("T", $shipment->docdate);
                 $docdate = explode("/", $exDocdate[0]);
