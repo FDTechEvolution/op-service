@@ -49,7 +49,7 @@ class ProductCategoriesController extends AppController
 
     public function all($procateId = null)
     {
-        $productCategory = $this->ProductCategories->find()->where(['id'=>$procateId, 'isactive !=' => 'D'])->first();
+        $productCategory = $this->ProductCategories->find()->where(['id'=>$procateId, 'status !=' => 'DEL'])->first();
         
         $json = json_encode($productCategory,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
@@ -162,14 +162,14 @@ class ProductCategoriesController extends AppController
         $result = true;
 
         if(is_null($procateId)){
-            $procate = $this->ProductCategories->find()->where(['name'=>$name, 'org_id'=>$orgId])->first();
+            $procate = $this->ProductCategories->find()->where(['name'=>$name, 'org_id'=>$orgId, 'status !=' => 'DEL'])->first();
             if(!is_null($procate)){
                 $msg = "Product Category name of Organization can't be duplicate.";
                 $result = false;
             }
 
         }else{
-            $procate = $this->ProductCategories->find()->where(['name'=>$name, 'org_id'=>$orgId, 'id !='=>$procateId])->first();
+            $procate = $this->ProductCategories->find()->where(['name'=>$name, 'org_id'=>$orgId, 'id !='=>$procateId, 'status !=' => 'DEL'])->first();
             if(!is_null($procate)){
                 $msg = "Product Category name of Organization can't be duplicate.";
                 $result = false;

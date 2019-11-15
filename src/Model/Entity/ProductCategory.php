@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property string|null $modifiedby
  * @property string|null $description
  * @property string $isactive
+ * @property string $status
  *
  * @property \App\Model\Entity\Org $org
  * @property \App\Model\Entity\Product[] $products
@@ -39,6 +40,7 @@ class ProductCategory extends Entity
         'modifiedby' => true,
         'description' => true,
         'isactive' => true,
+        'status' => true,
         'org' => true,
         'products' => true
     ];
