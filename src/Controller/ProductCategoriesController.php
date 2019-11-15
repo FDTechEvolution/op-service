@@ -22,7 +22,7 @@ class ProductCategoriesController extends AppController
 
     public function index($procateId = null)
     {
-        $productCategory = $this->ProductCategories->find()->where(['isactive !=' => 'D'])->toArray();
+        $productCategory = $this->ProductCategories->find()->where(['status !=' => 'DEL'])->toArray();
 
         $json = json_encode($productCategory,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
@@ -32,7 +32,7 @@ class ProductCategoriesController extends AppController
     public function getcategories($orgId = null)
     {
         $productCategories = $this->ProductCategories->find()
-            ->where(['org_id' => $orgId, 'isactive' => 'Y'])->toArray();
+            ->where(['org_id' => $orgId, 'status' => 'DEL'])->toArray();
         $newProcate = [];
         if($productCategories){
             foreach($productCategories as $procate){
