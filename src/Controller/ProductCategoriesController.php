@@ -132,17 +132,15 @@ class ProductCategoriesController extends AppController
             $procate = $this->ProductCategories->find()->where(['id'=>$procateId])->first();
             $procate->isactive = 'D';
 
-            //Check product in categories
-            $resultOfChkProduct = $this->chkProductInCategories($procateId);
-        
-            if($resultOfChkProduct['result']){
-                if($this->ProductCategories->save($procate)){
-                    $result = ['result'=>true,'msg'=>'success'];
-                }else{
-                    $result = ['result'=>false,'msg'=>$procate->getErrors()];
+            if($this->ProductCategories->save($procate)){
+                $products = $this->Products->find()->where(['brand_id' => $procateId])->toArray();
+                foreach($products as $product){
+                    $product->status = 'DEL';
+                    $this->Products->save($product);
                 }
+                $result = ['result'=>true,'msg'=>'success'];
             }else{
-                $result = $resultOfChkProduct;
+                $result = ['result'=>false,'msg'=>$procate->getErrors()];
             }
             
         }
