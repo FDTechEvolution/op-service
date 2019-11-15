@@ -130,7 +130,7 @@ class ProductCategoriesController extends AppController
 
         if($this->request->is(['post'])){
             $procate = $this->ProductCategories->find()->where(['id'=>$procateId])->first();
-            $procate->isactive = 'D';
+            $procate->status = 'DEL';
 
             if($this->ProductCategories->save($procate)){
                 $products = $this->Products->find()->where(['brand_id' => $procateId])->toArray();
