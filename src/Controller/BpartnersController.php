@@ -31,7 +31,29 @@ class BpartnersController extends AppController
 
     public function all($org = null)
     {
-        $bpartner = $this->Bpartners->find()->where(['org_id'=>$org, 'status !=' => 'DEL'])->toArray();
+        $getOrg = $this->request->getQuery('org');
+        $getActive = $this->request->getQuery('active');
+        $getLevel = $this->request->getQuery('level');
+        $getLimit = $this->request->getQuery('limit');
+
+        if(is_null($getLevel) && is_null($getOrg)){
+            $bpartner = $this->Bpartners->find()->where(['status !=' => 'DEL'])->toArray();
+        }else{
+            $isactive = isset($getActive)?($getActive == 'yes'?(['isactive' => 'Y']):($getActive == 'no'?(['isactive' => 'N']):false)) : true;
+            $limit = isset($getLimit)?$limit = $getLimit:$limit = 100;
+            $org = isset($getOrg)?(['org_id' => $getOrg]):'';
+            $level = isset($getLevel)?(['level' => $getLevel]):'';
+            $resultListCondution = $this->listCondition($getLimit, $isactive);
+
+            if($resultListCondution['result']){
+                $bpartner = $this->Bpartners->find()
+                            ->where([$org, $level, $isactive, 'status !=' => 'DEL'])
+                            ->limit($limit)
+                            ->toArray();
+            }else{
+                $bpartner = $resultListCondution;
+            }
+        }
         
         $json = json_encode($bpartner,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
@@ -214,5 +236,21 @@ class BpartnersController extends AppController
         }
 
         return ['result'=>$result, 'msg'=>$msg];
+    }
+
+    private function listCondition($getLimit, $isactive){
+        $msg = '';
+        $result = true;
+
+        if(isset($getLimit) && !is_numeric($getLimit)){
+            $msg = "Limit is be interger.";
+            $result = false;
+        }
+        if(!$isactive){
+            $msg = "Active status is not correct.";
+            $result = false;
+        }
+
+        return ['result'=>$result,'msg'=>$msg];
     }
 }
