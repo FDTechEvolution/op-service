@@ -163,7 +163,7 @@ class BpartnersController extends AppController
 
         if($this->request->is(['post'])){
             $bpartner = $this->Bpartners->find()->where(['id'=>$bpartnerId])->first();
-            $bpartner->isactive = 'D';
+            $bpartner->status = 'DEL';
         
             if($this->Bpartners->save($bpartner)){
                 $result = ['result'=>true,'msg'=>'success'];
