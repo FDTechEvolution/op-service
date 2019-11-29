@@ -183,7 +183,9 @@ class BpartnersController extends AppController
     public function getaddress($bpartnerId = null) {
         $bpart_addrs = $this->BpartAddress->find()->where(['bpartner_id' => $bpartnerId])->toArray();
         if($bpart_addrs) {
-            $address = $this->Addresses->find()->where(['id' => $bpart_addrs->address_id])->toArray();
+            foreach($bpart_addrs as $bpart_addr){
+                $address = $this->Addresses->find()->where(['id' => $bpart_addr->address_id])->toArray();
+            }
         }else{
             $address = ['result'=>false,'msg'=>$bpart_addr->getErrors()];
         }
