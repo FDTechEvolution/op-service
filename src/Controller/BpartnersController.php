@@ -224,6 +224,26 @@ class BpartnersController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function deleteaddress($addressID = null) {
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $address = $this->Addresses->find()->where(['id'=>$addressID])->first();
+            $address->status = 'DEL';
+        
+            if($this->Addresses->save($address)){
+                $result = ['result'=>true,'msg'=>'success'];
+            }else{
+                $result = ['result'=>false,'msg'=>$address->getErrors()];
+            }
+            
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
 
 
 
