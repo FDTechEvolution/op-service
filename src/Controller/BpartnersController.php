@@ -206,7 +206,7 @@ class BpartnersController extends AppController
             if($this->Addresses->save($address)) {
                 $lastID = $address->id;
                 $bpart_addr = $this->BpartAddress->newEntity();
-                $bpart_addr->bpartner_id = $datapost['bpartner_id'];
+                $bpart_addr->bpartner_id = $dataPost['bpartner_id'];
                 $bpart_addr->address_id = $lastID;
                 $bpart_addr->seq = 0;
                 if($this->BpartAddress->save($bpart_addr)) {
