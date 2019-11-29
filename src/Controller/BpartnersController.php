@@ -195,6 +195,33 @@ class BpartnersController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function createaddress() {
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $address = $this->Addresses->newEntity();
+            $dataPost = $this->request->getData();
+            $address = $this->Addresses->patchEntity($address, $dataPost);
+
+            if($this->Addresses->save($address)) {
+                $lastID = $address->id;
+                $bpart_addr = $this->BpartAddress->newEntity();
+                $bpart_addr->bpartner_id = $datapost['bpartner_id'];
+                $bpart_addr->address_id = $lastID;
+                $bpart_addr->seq = 0;
+                if($this->BpartAddress->save($bpart_addr)) {
+                    $result = ['result'=>true,'msg'=>'success'];
+                }else{
+                    $result = ['result'=>false,'msg'=>$bpartner->getErrors()];
+                }
+            }
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
 
 
 
