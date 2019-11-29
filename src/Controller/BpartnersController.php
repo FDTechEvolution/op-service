@@ -17,7 +17,8 @@ class BpartnersController extends AppController
         parent::beforeFilter($event);
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
-    
+        $this->BpartAddress = TableRegistry::get('bpartner_addresses');
+        $this->Addresses = TableRegistry::get('addresses');
     }
 
     public function index()
@@ -174,6 +175,20 @@ class BpartnersController extends AppController
         }
 
         $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
+
+    public function address($bpartnerId = null) {
+        $bpart_addr = $this->BpartAddress->find()->where(['bpartner_id' => $bpartnerId])->toArray();
+        if($bpart_addr) {
+            $address = $this->Addresses->find()->where(['id' => $bpart_addr->address_id])->toArray();
+        }else{
+            $address = ['result'=>false,'msg'=>$bpart_addr->getErrors()];
+        }
+
+        $json = json_encode($address,JSON_PRETTY_PRINT);
         $this->set(compact('json'));
         $this->set('_serialize', 'json');
     }
