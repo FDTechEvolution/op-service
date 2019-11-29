@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
+use Cake\ORM\Table;
 
 /**
  * Bpartners Controller
@@ -181,13 +182,14 @@ class BpartnersController extends AppController
 
 
     public function getaddress($bpartnerId = null) {
-        $bpart_addrs = $this->BpartAddress->find()->where(['bpartner_id' => $bpartnerId])->toArray();
-        if($bpart_addrs) {
-            foreach($bpart_addrs as $bpart_addr){
-                $address = $this->Addresses->find()->where(['id' => $bpart_addr->address_id])->toArray();
-            }
+        $addrs = $this->BpartAddress->find()
+                        ->contain(['addresses'])
+                        ->where(['bpartner_addresses.bpartner_id' => $bpartnerId])
+                        ->toArray();
+        if($addrs) {
+            $address = $addrs;
         }else{
-            $address = ['result'=>false,'msg'=>$bpart_addr->getErrors()];
+            $address = ['result'=>false,'msg'=>$addrs->getErrors()]; 
         }
 
         $json = json_encode($address,JSON_PRETTY_PRINT);
