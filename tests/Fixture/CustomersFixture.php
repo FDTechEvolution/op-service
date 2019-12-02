@@ -23,6 +23,7 @@ class CustomersFixture extends TestFixture
         'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'modified' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
         'isactive' => ['type' => 'string', 'length' => null, 'null' => false, 'default' => 'Y', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'status' => ['type' => 'string', 'length' => 3, 'null' => false, 'default' => 'ON', 'collate' => 'utf8_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -41,14 +42,15 @@ class CustomersFixture extends TestFixture
     {
         $this->records = [
             [
-                'id' => '33a041f6-faf4-49e0-ae78-5a316df9b811',
+                'id' => '46af50fa-d255-42e1-8d2c-f46ef16bf290',
                 'name' => 'Lorem ipsum dolor sit amet',
-                'org_id' => '738f7dde-dc74-4589-9947-1a49861356c3',
+                'org_id' => 'e2ebc00a-1c7f-4fd5-8f70-1d93a9634fec',
                 'mobile' => 'Lorem ipsum dolor sit amet',
                 'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created' => '2019-08-21 08:03:49',
-                'modified' => '2019-08-21 08:03:49',
-                'isactive' => 'Lorem ipsum dolor sit amet'
+                'created' => '2019-12-02 07:56:15',
+                'modified' => '2019-12-02 07:56:15',
+                'isactive' => 'Lorem ipsum dolor sit amet',
+                'status' => 'L'
             ],
         ];
         parent::init();

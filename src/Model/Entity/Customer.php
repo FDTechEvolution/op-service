@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $created
  * @property \Cake\I18n\FrozenTime|null $modified
  * @property string $isactive
+ * @property string $status
  *
  * @property \App\Model\Entity\Org $org
  * @property \App\Model\Entity\CustomerAddress[] $customer_addresses
@@ -37,6 +38,7 @@ class Customer extends Entity
         'created' => true,
         'modified' => true,
         'isactive' => true,
+        'status' => true,
         'org' => true,
         'customer_addresses' => true
     ];

@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\OrgsTable&\Cake\ORM\Association\BelongsTo $Orgs
  * @property \App\Model\Table\CustomerAddressesTable&\Cake\ORM\Association\HasMany $CustomerAddresses
+ * @property &\Cake\ORM\Association\HasMany $Orders
  *
  * @method \App\Model\Entity\Customer get($primaryKey, $options = [])
  * @method \App\Model\Entity\Customer newEntity($data = null, array $options = [])
@@ -48,6 +49,9 @@ class CustomersTable extends Table
         $this->hasMany('CustomerAddresses', [
             'foreignKey' => 'customer_id'
         ]);
+        $this->hasMany('Orders', [
+            'foreignKey' => 'customer_id'
+        ]);
     }
 
     /**
@@ -80,6 +84,11 @@ class CustomersTable extends Table
         $validator
             ->scalar('isactive')
             ->notEmptyString('isactive');
+
+        $validator
+            ->scalar('status')
+            ->maxLength('status', 3)
+            ->notEmptyString('status');
 
         return $validator;
     }
