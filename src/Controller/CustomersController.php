@@ -176,7 +176,7 @@ class CustomersController extends AppController
 
         if($this->request->is(['post'])){
             $customer = $this->Customers->find()->where(['id'=>$customerId])->first();
-            $customer->isactive = 'D';
+            $customer->status = 'DEL';
         
             if($this->Customers->save($customer)){
                 $result = ['result'=>true,'msg'=>'success'];
