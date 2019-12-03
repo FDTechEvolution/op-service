@@ -64,14 +64,19 @@ class CustomersController extends AppController
 
     public function getAddress($customerId = null)
     {
-        $cus_addr = $this->cus_addr->find()->where(['customer_id' => $customerId])->first();
-        if(isset($cus_addr)){
-            $address = $this->address->find()->where(['id' => $cus_addr['address_id']])->first();
-
-            $json = json_encode($address,JSON_PRETTY_PRINT);
-            $this->set(compact('json'));
-            $this->set('_serialize', 'json');
+        $cus_addr = $this->cus_addr->find()
+                    ->contain(['addresses'])
+                    ->where(['customer_address.customer_id' => $customerId, 'status !=' => 'DEL' ])
+                    ->toArray();
+        if($cus_addr){
+            $address = $cus_addr;
+        }else{
+            $address = ['result'=>false,'msg'=>$addrs->getErrors()];
         }
+
+        $json = json_encode($address,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
     }
 
     
