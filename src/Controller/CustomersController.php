@@ -86,18 +86,23 @@ class CustomersController extends AppController
             $address = $this->address->newEntity();
             $dataPost = $this->request->getData();
             $address = $this->address->patchEntity($address, $dataPost);
+            $resultOfAddress = $this->chkAddress($dataPost['line1'], $dataPost['subdistrict'], $dataPost['district'], $dataPost['province'], $dataPost['zipcode']);
 
-            if($this->address->save($address)) {
-                $lastID = $address->id;
-                $cus_addr = $this->cus_addr->newEntity();
-                $cus_addr->customer_id = $dataPost['customer_id'];
-                $cus_addr->address_id = $lastID;
-                $cus_addr->seq = 0;
-                if($this->cus_addr->save($cus_addr)) {
-                    $result = ['result'=>true,'msg'=>'success'];
-                }else{
-                    $result = ['result'=>false,'msg'=>$cus_addr->getErrors()];
+            if($resultOfAddress['result']){
+                if($this->address->save($address)) {
+                    $lastID = $address->id;
+                    $cus_addr = $this->cus_addr->newEntity();
+                    $cus_addr->customer_id = $dataPost['customer_id'];
+                    $cus_addr->address_id = $lastID;
+                    $cus_addr->seq = 0;
+                    if($this->cus_addr->save($cus_addr)) {
+                        $result = ['result'=>true,'msg'=>'success'];
+                    }else{
+                        $result = ['result'=>false,'msg'=>$cus_addr->getErrors()];
+                    }
                 }
+            }else{
+                $result = $resultOfAddress;
             }
         }
 
@@ -276,24 +281,24 @@ class CustomersController extends AppController
         if(is_null($customerId)){ //create
             $customer = $this->Customers->find()->where(['org_id'=>$orgId , 'name' => $name])->first(); //chk name
             if(!is_null($customer)){
-                $msg .= "Customer name of Organization can't be duplicate.";
+                $msg .= "name duplicate.";
                 $result = false;
             }
             $customer = $this->Customers->find()->where(['org_id'=>$orgId , 'mobile' => $mobile])->first(); //chk mobile
             if(!is_null($customer)){
-                $msg = "Customer mobile of Organization can't be duplicate,";
+                $msg = "mobile duplicate,";
                 $result = false;
             }
 
         }else{ //update
             $customer = $this->Customers->find()->where(['org_id'=>$orgId ,'name'=>$name, 'id !='=>$customerId])->first();
             if(!is_null($customer)){
-                $msg = "Customer name of Organization can't be duplicate,";
+                $msg = "name duplicate,";
                 $result = false;
             }
             $customer = $this->Customers->find()->where(['org_id'=>$orgId ,'mobile'=>$mobile, 'id !='=>$customerId])->first();
             if(!is_null($customer)){
-                $msg .= "Customer mobile of Organization can't be duplicate.";
+                $msg .= "mobile duplicate.";
                 $result = false;
             }
         }
