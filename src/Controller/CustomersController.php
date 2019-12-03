@@ -190,7 +190,7 @@ class CustomersController extends AppController
                         $cus_addr->address_id = $addrId;
                         $cus_addr->seq = 0;
                         if($this->CusAddr->save($cus_addr)){
-                            $result = ['result'=>true,'msg'=>'success'];
+                            $result = [$resultOfCheckDup, $resultOfAddress];
                         }else{
                             $result = ['result'=>false,'msg'=>$cus_addr->getErrors()];
                         }
@@ -275,7 +275,7 @@ class CustomersController extends AppController
     * PRIVATE SECTION
     **/
     private function checkDuplicate($name = '', $mobile = '', $orgId = '', $customerId = null){
-        $msg = '';
+        $msg = 'success';
         $result = true;
 
         if(is_null($customerId)){ //create
@@ -307,7 +307,7 @@ class CustomersController extends AppController
     }
 
     private function chkAddress($line1 = '', $subdistrict = '', $district = '', $province ='', $zipcode = ''){
-        $msg = '';
+        $msg = 'success';
         $result = true;
 
         if(is_null($line1) || is_null($subdistrict) || is_null($district) || is_null($province) || is_null($zipcode)){
@@ -319,7 +319,7 @@ class CustomersController extends AppController
     }
 
     private function listCondition($getLimit, $isactive){
-        $msg = '';
+        $msg = 'success';
         $result = true;
 
         if(isset($getLimit) && !is_numeric($getLimit)){

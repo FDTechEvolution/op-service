@@ -271,7 +271,7 @@ class BpartnersController extends AppController
     * PRIVATE SECTION
     **/
     private function checkDuplicate($company = '', $name = '', $mobile = '', $orgId = '', $bpartnerId = null){
-        $msg = '';
+        $msg = 'success';
         $result = true;
 
         if(is_null($bpartnerId)){ //create
@@ -313,7 +313,7 @@ class BpartnersController extends AppController
     }
 
     private function chkAddress($line1 = '', $subdistrict = '', $district = '', $province ='', $zipcode = ''){
-        $msg = '';
+        $msg = 'success';
         $result = true;
 
         if(is_null($line1) || is_null($subdistrict) || is_null($district) || is_null($province) || is_null($zipcode)){
@@ -325,7 +325,7 @@ class BpartnersController extends AppController
     }
 
     private function listCondition($getLimit, $isactive){
-        $msg = '';
+        $msg = 'success';
         $result = true;
 
         if(isset($getLimit) && !is_numeric($getLimit)){
