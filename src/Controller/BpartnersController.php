@@ -101,7 +101,7 @@ class BpartnersController extends AppController
                         $bpart_addr->address_id = $addrId;
                         $bpart_addr->seq = 0;
                         if($this->bpartnerAddr->save($bpart_addr)){
-                            $result = ['result'=>true,'msg'=>'success'];
+                            $result = [$resultOfCheckDup, $resultOfAddress];
                         }else{
                             $result = ['result'=>false,'msg'=>$bpart_addr->getErrors()];
                         }
