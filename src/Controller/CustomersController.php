@@ -79,6 +79,33 @@ class CustomersController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function createaddress() {
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $address = $this->address->newEntity();
+            $dataPost = $this->request->getData();
+            $address = $this->address->patchEntity($address, $dataPost);
+
+            if($this->address->save($address)) {
+                $lastID = $address->id;
+                $cus_addr = $this->cus_addr->newEntity();
+                $cus_addr->customer_id = $dataPost['customer_id'];
+                $cus_addr->address_id = $lastID;
+                $cus_addr->seq = 0;
+                if($this->cus_addr->save($cus_addr)) {
+                    $result = ['result'=>true,'msg'=>'success'];
+                }else{
+                    $result = ['result'=>false,'msg'=>$cus_addr->getErrors()];
+                }
+            }
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
+
     
     public function create(){
 
