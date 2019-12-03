@@ -66,7 +66,7 @@ class CustomersController extends AppController
     {
         $cus_addr = $this->cus_addr->find()
                     ->contain(['addresses'])
-                    ->where(['customer_address.customer_id' => $customerId, 'status !=' => 'DEL' ])
+                    ->where(['customer_addresses.customer_id' => $customerId, 'status !=' => 'DEL' ])
                     ->toArray();
         if($cus_addr){
             $address = $cus_addr;
