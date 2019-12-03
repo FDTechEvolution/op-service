@@ -281,7 +281,7 @@ class CustomersController extends AppController
         if(is_null($customerId)){ //create
             $customer = $this->Customers->find()->where(['org_id'=>$orgId , 'name' => $name])->first(); //chk name
             if(!is_null($customer)){
-                $msg .= "name duplicate.";
+                $msg = "name duplicate.";
                 $result = false;
             }
             $customer = $this->Customers->find()->where(['org_id'=>$orgId , 'mobile' => $mobile])->first(); //chk mobile
@@ -298,7 +298,7 @@ class CustomersController extends AppController
             }
             $customer = $this->Customers->find()->where(['org_id'=>$orgId ,'mobile'=>$mobile, 'id !='=>$customerId])->first();
             if(!is_null($customer)){
-                $msg .= "mobile duplicate.";
+                $msg = "mobile duplicate.";
                 $result = false;
             }
         }
