@@ -40,6 +40,7 @@ class ProductsController extends AppController
     }
 
     public function all(){
+        $getProduct = $this->request->getQuery('id');
         $getOrg = $this->request->getQuery('org');
         $getActive = $this->request->getQuery('active');
         $getLimit = $this->request->getQuery('limit');
@@ -54,12 +55,13 @@ class ProductsController extends AppController
             $category = isset($getCategory)?(['product_category_id' => $getCategory]):'';
             $brand = isset($getBrand)?(['brand_id' => $getBrand]):'';
             $org = isset($getOrg)?(['org_id' => $getOrg]):'';
+            $id = isset($getProduct)?(['id' => $getProduct]):'';
             $resultListCondution = $this->listCondition($getLimit, $isactive);
             $newProduct = [];
 
             if($resultListCondution['result']){
                 $products = $this->Products->find()
-                        ->where([$isactive, $category, $brand, $org, 'status !=' => 'DEL'])
+                        ->where([$isactive, $category, $brand, $org, $id, 'status !=' => 'DEL'])
                         ->limit($limit)
                         ->order(['created' => 'DESC'])
                         ->toArray();
