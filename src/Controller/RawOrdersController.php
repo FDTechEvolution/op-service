@@ -37,7 +37,7 @@ class RawOrdersController extends AppController
         $getLimit = $this->request->getQuery('limit');
 
         if(is_null($getLimit) && is_null($getOrg)){
-            $rawOrder = $this->RawOrders->find()->where(['status !=' => 'DEL'])->toArray();
+            $rawOrder = $this->RawOrders->find()->where(['status' => 'DR'])->toArray();
         }else{
             $limit = isset($getLimit)?$limit = $getLimit:$limit = 100;
             $org = isset($getOrg)?(['org_id' => $getOrg]):'';
@@ -45,7 +45,7 @@ class RawOrdersController extends AppController
 
             if($resultListCondution['result']){
                 $rawOrder = $this->RawOrders->find()
-                        ->where([$org, 'status !=' => 'DEL'])
+                        ->where([$org, 'status' => 'DR'])
                         ->limit($limit)
                         ->toArray();
             }else{
