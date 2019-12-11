@@ -34,6 +34,7 @@ class RawOrdersController extends AppController
 
     public function all(){
         $getOrg = $this->request->getQuery('org');
+        $getStat = $this->request->getQuery('status');
         $getLimit = $this->request->getQuery('limit');
 
         if(is_null($getLimit) && is_null($getOrg)){
@@ -41,11 +42,12 @@ class RawOrdersController extends AppController
         }else{
             $limit = isset($getLimit)?$limit = $getLimit:$limit = 100;
             $org = isset($getOrg)?(['org_id' => $getOrg]):'';
+            $status = isset($getStat)?(['status' => $getStat]):'';
             $resultListCondution = $this->listCondition($getLimit);
 
             if($resultListCondution['result']){
                 $rawOrder = $this->RawOrders->find()
-                        ->where([$org, 'status' => 'DR'])
+                        ->where([$org, $status])
                         ->limit($limit)
                         ->toArray();
             }else{
@@ -97,6 +99,24 @@ class RawOrdersController extends AppController
         $this->set('_serialize', 'json');
     }
 
+    public function confirmOrder ($id = null) {
+        $result = ['result'=>false,'msg'=>'please use POST method.'];
+
+        if($this->request->is(['post'])){
+            $rawOrder = $this->RawOrders->find()->where(['id'=>$id])->first();
+            $rawOrder->status = 'CO';
+        
+            if($this->RawOrders->save($rawOrder)){
+                $result = ['result'=>true,'msg'=>'success'];
+            }else{
+                $result = ['result'=>false,'msg'=>$rawOrder->getErrors()];
+            }
+        }
+
+        $json = json_encode($result,JSON_PRETTY_PRINT);
+        $this->set(compact('json'));
+        $this->set('_serialize', 'json');
+    }
 
     public function delete($rawOrderId = null){
 

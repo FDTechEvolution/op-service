@@ -134,9 +134,10 @@ class OrdersController extends AppController
             $order = $this->Orders->newEntity();
             $dataPost = $this->request->getData();
             $order = $this->Orders->patchEntity($order, $dataPost);
+            $order->orderdate = date('Y-m-d');
         
             if($this->Orders->save($order)){
-                $result = ['result'=>true,'msg'=>'success'];
+                $result = ['result'=>true,'msg'=> $order->order_id];
             }else{
                 $result = ['result'=>false,'msg'=>$order->getErrors()];
             }
