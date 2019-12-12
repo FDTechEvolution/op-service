@@ -43,21 +43,21 @@ class OrderLinesController extends AppController
 
             if($this->request->is(['post'])){
                 $postData = $this->request->getData();
-                $order = $this->Orders->find()->where(['id' => $orderID])->first();
-                foreach($postData['products'] as $key => $product_id){
+                foreach($postData['products'] as $key => $productData){
                     $orderLine = $this->OrderLines->newEntity();
-                    $product = $this->Products->find()->where(['id' => $product_id])->first();
-                    
-                    $orderLine->org_id = $order->org_id;
+                    //$product = $this->Products->find()->where(['id' => $productData['product']])->first();
+
+                    $orderLine->org_id = $postData['org_id'];
                     $orderLine->order_id = $orderID;
-                    $orderLine->product_id = $postData['products'][$key];
-                    $orderLine->qty = $postData['qtys'][$key];
-                    $orderLine->price = $product->price;
-                    $totalamt += $orderLine->amount = $this->amountPrice($postData['qtys'][$key],$product->price);
+                    $orderLine->product_id = $productData['product'];
+                    $orderLine->qty = $productData['qty'];
+                    $orderLine->price = ($productData['price']/$productData['qty']);
+                    $orderLine->amount = $productData['price'];
+                    //$totalamt += $orderLine->amount = $this->amountPrice($productData['qty'],$productData['price']);
 
                     $this->OrderLines->save($orderLine);
                 }
-                $result = $this->setStatus($orderID, $totalamt);
+                //$result = $this->setStatus($orderID, $totalamt);
             }
         }else{
             $result = ['result'=>false, 'msg'=>'Order is null.'];
@@ -85,12 +85,13 @@ class OrderLinesController extends AppController
                         $orderLine->product_id = $product->id;
                         $orderLine->qty = $postData['qtys'][$key];
                         $orderLine->price = $product->price;
-                        $totalamt += $orderLine->amount = $this->amountPrice($postData['qtys'][$key],$product->price);
+                        $orderLine->amount = $this->amountPrice($postData['qtys'][$key],$product->price);
+                        //$totalamt += $orderLine->amount = $this->amountPrice($postData['qtys'][$key],$product->price);
                     }
 
                     $this->OrderLines->save($orderLine);
                 }
-                $result = $this->setStatus($orderID, $totalamt);
+                //$result = $this->setStatus($orderID, $totalamt);
             }
         }else{
             $result = ['result'=>false, 'msg'=>'Order is null.'];
@@ -117,7 +118,7 @@ class OrderLinesController extends AppController
         $orderline = $this->OrderLines->find()->where(['order_id' => $orderID])->toArray();
             if(sizeof($orderline) != 0){
                 $order = $this->Orders->get($orderID);
-                $order->status = 'DX';
+                $order->status = 'CO';
                 $order->totalamt = $totalamt;
                 if($this->Orders->save($order)){
                     return ['result'=>true,'msg'=>'success'];
