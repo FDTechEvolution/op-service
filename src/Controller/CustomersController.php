@@ -189,8 +189,9 @@ class CustomersController extends AppController
                         $cus_addr->customer_id = $cusId;
                         $cus_addr->address_id = $addrId;
                         $cus_addr->seq = 0;
+                        $allID = ['customer'=>$cusId, 'address'=>$addrId];
                         if($this->CusAddr->save($cus_addr)){
-                            $result = [$resultOfCheckDup, $resultOfAddress];
+                            $result = [$resultOfCheckDup, $resultOfAddress, $allID];
                         }else{
                             $result = ['result'=>false,'msg'=>$cus_addr->getErrors()];
                         }

@@ -19,6 +19,7 @@ class OrdersController extends AppController
         $this->CustomerAddresses = TableRegistry::get('customer_addresses');
         //$this->getEventManager()->off($this->Csrf); 
         //$this->Security->setConfig('unlockedActions', ['create']);
+        $this->Shippings = TableRegistry::get('OrderShippings');
     
     }
 
@@ -138,7 +139,9 @@ class OrdersController extends AppController
             $order->status = 'CO';
         
             if($this->Orders->save($order)){
-                $result = ['result'=>true,'msg'=> $order->id];
+                if($this->saveShipping($order->id, $dataPost['address_id'])){
+                    $result = ['result'=>true,'msg'=> $order->id];
+                }
             }else{
                 $result = ['result'=>false,'msg'=>$order->getErrors()];
             }
@@ -213,6 +216,16 @@ class OrdersController extends AppController
         }
 
         return ['result'=>$result,'msg'=>$msg];
+    }
+
+    private function saveShipping($order, $address) {
+        $shipping = $this->Shippings->newEntity();
+        $shipping->order_id = $order;
+        $shipping->address_id = $address;
+
+        if($this->Shippings->save($shipping)){
+            return true;
+        }
     }
 
     
